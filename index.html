@@ -15,13 +15,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script>
-        window.onerror = function(msg, url, line) {
-            alert("System Error: " + msg);
-            return true;
-        };
-    </script>
-
-    <script>
         tailwind.config = {
             darkMode: 'class',
             theme: { extend: { colors: { sage: { 50: '#f4f7f4', 100: '#E8EDE6', 500: '#8A9A5B', 600: '#738249', 700: '#5F6F46', 900: '#2f3823' }, sand: '#F5F5F0' } } }
@@ -39,7 +32,6 @@
         
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: #fff; border: 2px solid currentColor; cursor: pointer; margin-top: -10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .mic-active { color: #ef4444 !important; animation: pulse 1s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body class="text-gray-800 min-h-screen flex flex-col mx-auto max-w-md bg-sand transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100">
@@ -91,7 +83,7 @@
             <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-sage-500 dark:bg-gray-800">
                 <h2 class="text-xl font-bold text-gray-800 mb-4 dark:text-white"><i class="fas fa-heart text-sage-500 mr-2"></i>Emotional Safety</h2>
                 <p class="text-sm text-gray-600 leading-relaxed mb-4 dark:text-gray-300">
-                    Pattern Breaker is a self-guided tool. It is not a substitute for therapy. Some prompts may bring up strong emotions — please pause if you need to.
+                    This is a self-guided tool. It is not a substitute for therapy. Some prompts may bring up strong emotions — please pause if you need to.
                 </p>
                 <div class="bg-sage-50 p-3 rounded-lg mb-6 dark:bg-gray-700">
                     <h3 class="text-xs font-bold text-sage-700 uppercase mb-1 dark:text-sage-300"><i class="fas fa-lock mr-1"></i> Privacy Notice</h3>
@@ -104,19 +96,16 @@
 
         <div id="screen-intake" class="hidden fade-in">
             <h2 class="text-xl font-bold text-sage-700 mb-6 dark:text-sage-300">Check-In</h2>
-            
             <div class="mb-6 relative">
                 <label class="block text-xs font-bold text-gray-400 uppercase mb-2">What's happening? (Vent here)</label>
                 <textarea id="in-vent" rows="3" class="w-full p-4 bg-white border border-sage-200 rounded-xl text-base outline-none shadow-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white" placeholder="I'm spiraling because..."></textarea>
                 <button onclick="App.startVoice('in-vent')" class="absolute bottom-3 right-3 text-gray-400 hover:text-sage-500"><i class="fas fa-microphone"></i></button>
             </div>
-
             <div class="mb-8">
                 <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Intensity (1-10)</label>
                 <input type="range" id="in-intensity" min="1" max="10" value="5" class="w-full" oninput="document.getElementById('intensity-val').innerText = this.value">
                 <p class="text-center font-bold text-sage-600 mt-2 dark:text-sage-400">Level: <span id="intensity-val">5</span></p>
             </div>
-
             <div class="mb-6">
                 <label class="block text-xs font-bold text-gray-400 uppercase mb-2">First Reaction?</label>
                 <select id="in-behavior" class="w-full p-4 bg-white border border-sage-200 rounded-xl text-sm outline-none shadow-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white">
@@ -130,7 +119,6 @@
                     <option value="self_blame">Self-blame (Shame)</option>
                 </select>
             </div>
-
             <button onclick="Decoder.run()" class="w-full bg-sage-500 hover:bg-sage-600 text-white font-bold py-4 rounded-xl shadow-lg mt-4 flex justify-center items-center gap-2">
                 <span id="decode-btn-text">Decode My Pattern</span>
                 <i id="decode-spinner" class="fas fa-spinner fa-spin hidden"></i>
@@ -214,12 +202,9 @@
                 <button onclick="Vault.switchTab('premium')" id="tab-premium" class="flex-1 py-2 text-xs font-bold rounded text-gray-400">Journal</button>
                 <button onclick="Vault.switchTab('reports')" id="tab-reports" class="flex-1 py-2 text-xs font-bold rounded text-gray-400">Reports</button>
             </div>
-            
             <div id="vault-content" class="space-y-3 pb-20"></div>
-            
             <div id="report-actions" class="hidden mt-4">
                 <button onclick="Weekly.generate()" class="w-full bg-sage-600 text-white font-bold py-3 rounded-xl shadow-lg mb-2">Generate Weekly Report</button>
-                <p class="text-xs text-center text-gray-400">Analyzes last 7 days of Premium entries.</p>
             </div>
         </div>
 
@@ -236,7 +221,7 @@
                 </div>
             </div>
             <div class="mt-8 text-center border-t pt-6 dark:border-gray-700">
-                 <p class="text-xs text-gray-400 mb-2">Version 19.0</p>
+                 <p class="text-xs text-gray-400 mb-2">Version 20.0</p>
                  <a href="https://angel-s-site-4148.thinkific.com/courses/understanding-relationship-patterns" target="_blank" class="text-sage-600 font-bold text-sm dark:text-sage-400">Visit Course Page</a>
             </div>
             <button onclick="App.navigateTo('screen-home')" class="w-full text-center text-sage-600 font-bold mt-6 dark:text-sage-400">Back</button>
@@ -246,12 +231,6 @@
             <div class="bg-white rounded-xl p-6 max-w-sm w-full relative dark:bg-gray-800">
                 <h2 class="text-xl font-bold text-sage-700 mb-4 dark:text-sage-300">About Pattern Breaker</h2>
                 <p class="text-sm text-gray-600 mb-4 dark:text-gray-300">This tool helps you identify emotional patterns connected to abandonment wounds and offers self-guided practices to interrupt them.</p>
-                <div class="bg-sage-50 p-3 rounded mb-4 text-xs dark:bg-gray-700">
-                    <p class="font-bold text-sage-700 mb-1 dark:text-sage-300">FREE</p>
-                    <p class="mb-2 dark:text-gray-400">Vent, Decode, Save Check-ins.</p>
-                    <p class="font-bold text-sage-700 mb-1 dark:text-sage-300">PREMIUM</p>
-                    <p class="dark:text-gray-400">Guided Journaling, Emotional Analysis, Weekly Reports.</p>
-                </div>
                 <button onclick="UI.toggleModal('modal-about')" class="w-full bg-sage-500 text-white py-2 rounded-lg font-bold">Close</button>
             </div>
         </div>
@@ -292,23 +271,32 @@
             activeModule: null
         };
 
-        // Migration check
         if (Array.isArray(State.vault)) { State.vault = { free: State.vault, premium: [], reports: [] }; localStorage.setItem('lunaVault', JSON.stringify(State.vault)); }
 
-        // --- 2. DECODER DATABASE (Deep Wisdom) ---
+        // --- 2. DATABASE (Restored Depth) ---
         const LOGIC_DB = {
-            'hyper_independence': { name: "Hyper Independence", subtype: "Protection Mode", what: "You are pushing others away to maintain control. Your system registers 'needing' as 'unsafe'. You are fortifying your walls because vulnerability feels like a threat.", why: "This isn't about strength; it's a survival strategy. Early on, you likely learned that no one was coming to save you, so you decided to become your own savior. Your nervous system imprinted 'aloneness' as the only safety.", interrupt: ["Drop your shoulders. Unclench your jaw.", "Say out loud: 'It is safe to let people in, just a little.'", "Lean back into your chair and let it support you."], practice: "The 5% Rule: Ask for help with one tiny thing today. It can be as simple as asking someone to pass the salt. Notice that you survived the request.", anchor: "I do not have to carry it all to be safe.", prompt: "What story am I telling myself about what will happen if I admit I need support right now?" },
-            'panic_clinging': { name: "Anxious Grasping", subtype: "Fight Mode Activation", what: "Your nervous system is screaming. You feel an urgent, frantic need to 'fix' the connection immediately. This is not love; this is a fight response to the threat of abandonment.", why: "This is an attachment wound being touched. Your child-self learned that 'distance' meant 'danger'. Your body is mobilizing energy to bridge the gap because it feels life-threatening.", interrupt: ["Put the phone down. Walk into another room immediately.", "Push your hands hard against a wall for 10 seconds to discharge the adrenaline.", "Splash cold water on your face to reset your vagus nerve."], practice: "Self-Soothing: Place a hand on your chest and say 'I am here with you. I am not leaving you.' Repeat until your breathing slows.", anchor: "My safety is inside me, not in their response.", prompt: "What am I trying to earn from them right now that I can give to myself?" },
-            'shutdown': { name: "Emotional Shutdown", subtype: "Freeze/Collapse Mode", what: "You are going numb. You feel foggy, distant, or 'checked out'. This is your system pulling the emergency brake to protect you from overwhelming pain.", why: "This is a learned survival strategy. When things got too heavy or scary in the past, your only option was to disappear inside yourself. You are not broken; you are protecting your core.", interrupt: ["Shake your hands vigorously for 30 seconds.", "Wrap yourself tightly in a heavy blanket (burrito wrap).", "Stomp your feet on the ground 10 times."], practice: "Orientation: Name 3 colors you see in the room out loud. Then name 3 textures you can feel. Bring your brain back to the present moment.", anchor: "It is safe to be in my body. I am right here.", prompt: "What specific emotion am I numbing out to avoid feeling right now?" },
-            'over_explaining': { name: "Over-Explaining", subtype: "Fawn/Appeasement Mode", what: "You are over-talking and over-giving to manage the other person's emotions. You believe if you explain yourself perfectly, you won't be rejected.", why: "You learned that your needs were 'too much' or unsafe. You survived by becoming easy, manageable, and 'good'. You are abandoning your truth to keep the peace.", interrupt: ["Stop talking. Take a breath.", "Say: 'I've said enough.'", "Press your tongue to the roof of your mouth to stop the urge to speak."], practice: "The Pause: Count to 5 before responding to anything today. Allow silence to exist without filling it.", anchor: "I do not need to explain my existence to be worthy.", prompt: "Where am I shrinking myself to make someone else comfortable?" },
-            'over_giving': { name: "Over Giving", subtype: "Fawn/Appeasement", what: "You are pouring out energy and resources to ensure you are 'needed.' You are preemptively paying a debt you don't owe.", why: "You learned that love was conditional on your utility. If you stop giving, you fear you will become disposable.", interrupt: ["Clench your fists, then release.", "Ask yourself: 'Do I actually want to do this, or am I just afraid to say no?'"], practice: "Say 'No' to one small thing today. It doesn't have to be big. Just reclaim one piece of your energy.", anchor: "My value is not in what I provide. I am enough.", prompt: "What am I trying to buy with my generosity?" },
-            'distrust': { name: "Hyper-Vigilance", subtype: "Scan Mode", what: "You are waiting for the other shoe to drop. You are analyzing tone, timing, and words, looking for betrayal or rejection.", why: "Chaos feels familiar to you; stability feels suspicious. Your nervous system is wired to scan for danger because you weren't protected in the past.", interrupt: ["Look around the room. Find 3 cues of safety (a locked door, a cozy chair).", "Fact-check: What is real vs. what is my fear imagining?"], practice: "Reality Testing: Write down the facts in one column and your 'story' in the other. See the difference.", anchor: "I can trust myself to handle whatever happens.", prompt: "What story am I inventing to prepare myself for pain?" },
-            'self_blame': { name: "Internalized Blame", subtype: "Shame Mode", what: "You are taking 100% of the responsibility for the disconnection. You are turning the anger inward on yourself.", why: "As a child, it was safer to believe 'I am bad' (which I can fix) than 'My caregiver is unsafe' (which is terrifying). You are blaming yourself to maintain a sense of control.", interrupt: ["Say out loud: 'This is not all my fault.'", "Push your feet firmly into the floor.", "Release the tension in your stomach."], practice: "Compassion: Talk to yourself like you would talk to your best friend who made a mistake.", anchor: "I am not the problem. I am worthy of repair.", prompt: "What responsibility am I carrying that actually belongs to someone else?" }
+            'hyper_independence': { name: "Hyper Independence", subtype: "Protection Mode", what: "You are pushing others away to maintain control. Your system registers 'needing' as 'unsafe'.", why: "This isn't about strength; it's a survival strategy. Early on, you likely learned that no one was coming to save you, so you decided to become your own savior.", interrupt: ["Drop your shoulders. Unclench your jaw.", "Say out loud: 'It is safe to let people in.'", "Lean back into your chair."], practice: "The 5% Rule: Ask for help with one tiny thing today.", anchor: "I do not have to carry it all to be safe.", prompt: "What am I afraid will happen if I admit I need support right now?" },
+            'panic_clinging': { name: "Anxious Grasping", subtype: "Fight Mode Activation", what: "Your nervous system is screaming. You feel an urgent, frantic need to 'fix' the connection immediately.", why: "This is an attachment wound being touched. Your child-self learned that 'distance' meant 'danger'.", interrupt: ["Put the phone down. Walk away.", "Push hands hard against a wall.", "Splash cold water on your face."], practice: "Self-Soothing: Place a hand on your chest and say 'I am here with you.'", anchor: "My safety is inside me, not in their response.", prompt: "What am I trying to earn from them right now?" },
+            'shutdown': { name: "Emotional Shutdown", subtype: "Freeze/Collapse Mode", what: "You are going numb. You feel foggy, distant, or 'checked out'.", why: "This is a learned survival strategy. When things got too heavy or scary in the past, your only option was to disappear.", interrupt: ["Shake your hands vigorously.", "Wrap yourself in a blanket.", "Stomp your feet 10 times."], practice: "Orientation: Name 3 colors you see in the room out loud.", anchor: "It is safe to be in my body.", prompt: "What specific emotion am I numbing out?" },
+            'over_explaining': { name: "Over-Explaining", subtype: "Fawn/Appeasement Mode", what: "You are over-talking and over-giving to manage the other person's emotions.", why: "You learned that your needs were 'too much' or unsafe. You survived by becoming easy, manageable, and 'good'.", interrupt: ["Stop talking. Take a breath.", "Say: 'I've said enough.'", "Press tongue to roof of mouth."], practice: "The Pause: Count to 5 before responding today.", anchor: "I do not need to explain my existence.", prompt: "Where am I shrinking myself to make someone else comfortable?" },
+            'over_giving': { name: "Over Giving", subtype: "Fawn/Appeasement", what: "You are pouring out energy and resources to ensure you are 'needed.'", why: "You learned that love was conditional on your utility. If you stop giving, you fear you will become disposable.", interrupt: ["Clench your fists, then release.", "Ask: 'Do I actually want to do this?'"], practice: "Say 'No' to one small thing today.", anchor: "My value is not in what I provide.", prompt: "What am I trying to buy with my generosity?" },
+            'distrust': { name: "Hyper-Vigilance", subtype: "Scan Mode", what: "You are waiting for the other shoe to drop. You are analyzing tone, timing, and words.", why: "Chaos feels familiar to you; stability feels suspicious. Your nervous system is wired to scan for danger.", interrupt: ["Look around. Find 3 cues of safety.", "Fact-check: What is real vs. imagined?"], practice: "Reality Testing: Write down facts vs. story.", anchor: "I can trust myself to handle whatever happens.", prompt: "What story am I inventing to prepare for pain?" },
+            'self_blame': { name: "Internalized Blame", subtype: "Shame Mode", what: "You are taking 100% of the responsibility for the disconnection.", why: "As a child, it was safer to believe 'I am bad' (which I can fix) than 'My caregiver is unsafe' (which is terrifying).", interrupt: ["Say: 'This is not all my fault.'", "Push feet into floor."], practice: "Compassion: Talk to yourself like a friend.", anchor: "I am not the problem.", prompt: "What responsibility am I carrying that isn't mine?" }
         };
 
         const EMOTION_KEYWORDS = { "anxious": ["worry", "scared", "nervous"], "angry": ["mad", "resent", "furious"], "sad": ["cry", "hopeless", "heavy"] };
 
-        // --- 3. CONTROLLERS ---
+        // --- 3. HELPERS ---
+        const UI = {
+            setText: (id, val) => { const el = document.getElementById(id); if(el) el.innerText = val; },
+            toast: (msg) => { const t = document.getElementById('toast'); t.innerText = msg; t.className = "show"; setTimeout(() => t.className = "", 3000); },
+            showPaywall: () => document.getElementById('paywallModal').classList.remove('hidden'),
+            closePaywall: () => document.getElementById('paywallModal').classList.add('hidden'),
+            toggleModal: (id) => { const m = document.getElementById(id); m.classList.contains('hidden') ? m.classList.remove('hidden') : m.classList.add('hidden'); },
+            toggleDark: () => { document.documentElement.classList.toggle('dark'); UI.toast("Theme Updated"); }
+        };
+
+        // --- 4. ANALYZER & WEEKLY ---
         const Analyzer = {
             analyze: function(text) {
                 let tone = "Neutral";
@@ -327,12 +315,13 @@
                 const report = { id: Date.now(), date: new Date().toISOString(), summary: `You checked in ${entries.length} times this week.` };
                 State.vault.reports.unshift(report);
                 Vault.save();
-                document.getElementById('report-body').innerText = report.summary;
+                UI.setText('report-body', report.summary);
                 UI.toggleModal('modal-report-view');
                 Vault.render('reports');
             }
         };
 
+        // --- 5. VAULT ---
         const Vault = {
             activeTab: 'free',
             save: function() { localStorage.setItem('lunaVault', JSON.stringify(State.vault)); },
@@ -376,10 +365,8 @@
                 });
                 document.getElementById('tab-' + tab).classList.add('bg-sage-100', 'text-sage-700');
                 document.getElementById('tab-' + tab).classList.remove('text-gray-400');
-                
                 const repBtn = document.getElementById('report-actions');
                 if(tab === 'reports') repBtn.classList.remove('hidden'); else repBtn.classList.add('hidden');
-                
                 Vault.render(tab);
             },
 
@@ -405,7 +392,7 @@
             }
         };
 
-        // --- 5. APP CONTROLLER ---
+        // --- 6. MAIN CONTROLLER ---
         const Decoder = {
             run: function() {
                 const b = document.getElementById('in-behavior').value;
@@ -416,19 +403,17 @@
                 State.inputs.intensity = document.getElementById('in-intensity').value;
 
                 document.getElementById('btn-decode').innerText = "Analyzing...";
-                document.getElementById('decode-spinner').classList.remove('hidden');
-
+                
                 setTimeout(() => {
                     const data = LOGIC_DB[b] || LOGIC_DB['panic_clinging'];
                     State.currentResult = { ...data };
                     
-                    document.getElementById('out-pattern').innerText = data.name;
-                    document.getElementById('out-subtype').innerText = `${data.subtype} • Intensity: ${State.inputs.intensity}`;
-                    document.getElementById('out-what').innerText = data.what;
-                    document.getElementById('out-why').innerText = data.why;
+                    UI.setText('out-pattern', data.name);
+                    UI.setText('out-subtype', `${data.subtype} • Intensity: ${State.inputs.intensity}`);
+                    UI.setText('out-what', data.what);
+                    UI.setText('out-why', data.why);
 
                     document.getElementById('btn-decode').innerText = "Decode My Pattern";
-                    document.getElementById('decode-spinner').classList.add('hidden');
                     App.navigateTo('screen-result');
                 }, 600);
             }
@@ -438,42 +423,31 @@
             navigateTo: function(screenId) {
                 document.querySelectorAll('main > div').forEach(el => el.classList.add('hidden'));
                 document.getElementById(screenId).classList.remove('hidden');
-                
-                // Progress Bar logic
-                const bar = document.getElementById('progress-container');
-                const fill = document.getElementById('progress-fill');
-                const progress = { 'screen-home': '0%', 'screen-checkin': '33%', 'screen-result': '66%', 'screen-module': '100%' }[screenId];
-                
-                if (progress && progress !== '0%') {
-                    bar.classList.remove('hidden');
-                    setTimeout(() => fill.style.width = progress, 50);
-                } else { bar.classList.add('hidden'); }
-
                 if(screenId === 'screen-vault') Vault.switchTab('free');
             },
-            startCheckIn: () => App.navigateTo('screen-intake'), // Renamed to match HTML
+            startCheckIn: () => App.navigateTo('screen-intake'),
             startPremiumJournal: () => {
                 if(!State.premium) return UI.showPaywall();
                 App.navigateTo('screen-premium-journal');
             },
             showModule: (type) => {
                 State.activeModule = type;
-                document.getElementById('mod-title').innerText = type;
+                UI.setText('mod-title', type);
                 
                 const r = State.currentResult;
                 let content = "";
-                
                 if (type === "Pattern Interrupter") content = Array.isArray(r.interrupt) ? r.interrupt[Math.floor(Math.random() * r.interrupt.length)] : r.interrupt;
                 else if (type === "Daily Practice") content = r.practice;
                 else if (type === "Anchor for Today") content = `"${r.anchor}"`;
                 else if (type === "Journal Prompt") content = r.prompt;
 
-                document.getElementById('mod-content').innerText = content;
+                UI.setText('mod-content', content);
 
                 const jArea = document.getElementById('journal-area');
                 if (type === 'Journal Prompt') {
                     jArea.classList.remove('hidden');
-                    document.getElementById('journal-input-module').value = State.inputs.vent ? `[Initial Vent]: ${State.inputs.vent}\n\n` : "";
+                    const vent = State.inputs.vent || "";
+                    document.getElementById('journal-input-module').value = vent ? `[Initial Vent]: ${vent}\n\n` : "";
                 } else { jArea.classList.add('hidden'); }
 
                 App.navigateTo('screen-module');
@@ -507,20 +481,6 @@
             reset: () => {
                 document.getElementById('in-vent').value = "";
                 App.navigateTo('screen-home');
-            }
-        };
-
-        const UI = {
-            toast: (msg) => { const t = document.getElementById('toast'); t.innerText = msg; t.className = "show"; setTimeout(() => t.className = "", 3000); },
-            showPaywall: () => document.getElementById('paywallModal').classList.remove('hidden'),
-            closePaywall: () => document.getElementById('paywallModal').classList.add('hidden'),
-            toggleModal: (id) => { const m = document.getElementById(id); m.classList.contains('hidden') ? m.classList.remove('hidden') : m.classList.add('hidden'); },
-            toggleDark: () => {
-                document.documentElement.classList.toggle('dark');
-                UI.toast("Dark Mode Toggled");
-            },
-            updateSlider: (el) => {
-                document.getElementById('intensity-val').innerText = el.value;
             }
         };
 
