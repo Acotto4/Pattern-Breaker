@@ -74,7 +74,7 @@
                 <button onclick="navigateTo('screen-rewrite')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700"><i class="fas fa-pen-fancy mr-2"></i>Rewrite</button>
             </div>
             
-            <p class="text-center text-xs text-gray-300 mt-8">v11.1</p>
+            <p class="text-center text-xs text-gray-300 mt-8">v12.1</p>
         </div>
 
         <div id="screen-checkin" class="hidden fade-in">
@@ -82,7 +82,7 @@
             
             <div class="mb-6">
                 <label class="block text-xs font-bold text-gray-400 uppercase mb-2">What's happening? (Vent here)</label>
-                <textarea id="in-vent" oninput="appState.patternInput.vent = this.value" rows="3" class="w-full p-4 bg-white border border-sage-200 rounded-xl text-base outline-none shadow-sm" placeholder="I'm spiraling because..."></textarea>
+                <textarea id="in-vent" oninput="state_vent = this.value" rows="3" class="w-full p-4 bg-white border border-sage-200 rounded-xl text-base outline-none shadow-sm" placeholder="I'm spiraling because..."></textarea>
             </div>
 
             <div class="mb-8">
@@ -220,7 +220,7 @@
             </div>
             
             <div class="mt-8 text-center border-t pt-6">
-                 <p class="text-xs text-gray-400 mb-2">Version 11.1</p>
+                 <p class="text-xs text-gray-400 mb-2">Version 12.1</p>
                  <a href="https://angel-s-site-4148.thinkific.com/courses/understanding-relationship-patterns" target="_blank" class="text-sage-600 font-bold text-sm">Visit Course Page</a>
             </div>
             
@@ -246,12 +246,11 @@
 
     <script>
         // --- 1. STATE ---
-        let appState = {
-            isPremium: localStorage.getItem('lunaPremium') === 'true',
-            patternInput: { vent: "", intensity: 5, behavior: "" },
-            currentResult: null,
-            activeModule: null
-        };
+        let state_premium = localStorage.getItem('lunaPremium') === 'true';
+        let state_vent = "";
+        let state_intensity = 5;
+        let state_result = null;
+        let state_module = null;
 
         const LOGIC_DB = {
             'hyper_independence': { name: "Hyper Independence", subtype: "Protection Mode", what: "You are pushing others away...", why: "Early on, you learned no one was coming...", interrupt: ["Drop shoulders.", "Say 'It is safe.'"], practice: "Ask for help.", anchor: "I do not have to carry it all.", prompt: "What am I afraid will happen if I admit I need support?" },
@@ -263,8 +262,7 @@
             'self_blame': { name: "Internalized Blame", subtype: "Shame Mode", what: "Taking 100% responsibility.", why: "Better bad than unsafe.", interrupt: ["Say 'Not my fault'.", "Push feet."], practice: "Compassion.", anchor: "I am not problem.", prompt: "What responsibility isn't mine?" }
         };
 
-        // --- 2. GLOBAL FUNCTIONS (No Objects = No Bugs) ---
-        
+        // --- 2. GLOBAL FUNCTIONS ---
         function navigateTo(id) {
             document.querySelectorAll('main > div').forEach(el => el.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
@@ -282,24 +280,34 @@
         }
 
         function runDecoder() {
-            try {
-                const b = document.getElementById('in-behavior').value;
-                if(!b) return alert("Please select a behavior.");
-                
-                appState.patternInput.behavior = b;
-                appState.patternInput.vent = document.getElementById('in-vent').value;
-                appState.patternInput.intensity = document.getElementById('in-intensity').value;
+            // SAFE MODE: Check if elements exist
+            const behaviorEl = document.getElementById('in-behavior');
+            const ventEl = document.getElementById('in-vent');
+            const intensityEl = document.getElementById('in-intensity');
 
-                // Loading
-                document.getElementById('decode-btn-text').innerText = "Analyzing...";
-                document.getElementById('decode-spinner').classList.remove('hidden');
+            if (!behaviorEl || !ventEl || !intensityEl) {
+                alert("System Error: Inputs not found.");
+                return;
+            }
 
-                setTimeout(() => {
+            const b = behaviorEl.value;
+            if(!b) return alert("Please select a behavior.");
+            
+            state_vent = ventEl.value;
+            state_intensity = intensityEl.value;
+
+            // Loading UI
+            document.getElementById('decode-btn-text').innerText = "Analyzing...";
+            document.getElementById('decode-spinner').classList.remove('hidden');
+
+            setTimeout(() => {
+                // INNER TRY/CATCH for Async Safety
+                try {
                     const data = LOGIC_DB[b] || LOGIC_DB['panic_clinging'];
                     
-                    appState.currentResult = {
+                    state_result = {
                         pattern: data.name,
-                        subtype: `${data.subtype} • Intensity: ${appState.patternInput.intensity}`,
+                        subtype: `${data.subtype} • Intensity: ${state_intensity}`,
                         what: data.what,
                         why: data.why,
                         interrupt: data.interrupt,
@@ -309,28 +317,33 @@
                         date: new Date()
                     };
 
-                    document.getElementById('out-pattern').innerText = appState.currentResult.pattern;
-                    document.getElementById('out-subtype').innerText = appState.currentResult.subtype;
-                    document.getElementById('out-badge').innerText = "Intensity: " + appState.patternInput.intensity;
-                    document.getElementById('out-what').innerText = appState.currentResult.what;
-                    document.getElementById('out-why').innerText = appState.currentResult.why;
+                    // Safe UI Updates
+                    if(document.getElementById('out-pattern')) document.getElementById('out-pattern').innerText = state_result.pattern;
+                    if(document.getElementById('out-subtype')) document.getElementById('out-subtype').innerText = state_result.subtype;
+                    if(document.getElementById('out-badge')) document.getElementById('out-badge').innerText = "Intensity: " + state_intensity;
+                    if(document.getElementById('out-what')) document.getElementById('out-what').innerText = state_result.what;
+                    if(document.getElementById('out-why')) document.getElementById('out-why').innerText = state_result.why;
 
+                    // Navigate
+                    navigateTo('screen-decode');
+
+                } catch (e) {
+                    alert("Analysis Error: " + e.message);
+                } finally {
+                    // Always Reset Button
                     document.getElementById('decode-btn-text').innerText = "Decode My Pattern";
                     document.getElementById('decode-spinner').classList.add('hidden');
-
-                    navigateTo('screen-decode');
-                }, 800);
-
-            } catch (e) { alert("Error: " + e.message); setLoading(false); }
+                }
+            }, 800);
         }
 
         function showModule(type) {
-            if (type === 'Journal Prompt' && !appState.isPremium) return showPaywall();
+            if (type === 'Journal Prompt' && !state_premium) return showPaywall();
             
-            appState.activeModule = type;
+            state_module = type;
             document.getElementById('mod-title').innerText = type;
             
-            const r = appState.currentResult;
+            const r = state_result;
             let content = "";
             
             if (type === "Pattern Interrupter") content = r.interrupt[Math.floor(Math.random() * r.interrupt.length)];
@@ -343,15 +356,14 @@
             const jArea = document.getElementById('journal-area');
             if (type === 'Journal Prompt') {
                 jArea.classList.remove('hidden');
-                const vent = appState.patternInput.vent;
-                document.getElementById('journal-input-module').value = vent ? `[Initial Vent]: ${vent}\n\n` : "";
+                document.getElementById('journal-input-module').value = state_vent ? `[Initial Vent]: ${state_vent}\n\n` : "";
             } else { jArea.classList.add('hidden'); }
 
             navigateTo('screen-module');
         }
 
         function regenerate(type) {
-            const r = appState.currentResult;
+            const r = state_result;
             const next = r.interrupt[Math.floor(Math.random() * r.interrupt.length)];
             document.getElementById('mod-interrupt-text').innerText = next;
             showToast("Refreshed");
@@ -365,21 +377,21 @@
         }
 
         function saveResultToVault() {
-            if(!appState.isPremium) return showPaywall();
-            saveToVault("Pattern Result", appState.currentResult.pattern);
+            if(!state_premium) return showPaywall();
+            saveToVault("Pattern Result", state_result.pattern);
         }
 
         function saveModuleToVault() {
-            if(!appState.isPremium) return showPaywall();
+            if(!state_premium) return showPaywall();
             let content = document.getElementById('mod-content').innerText;
-            if (appState.activeModule === 'Journal Prompt') {
+            if (state_module === 'Journal Prompt') {
                 content += "\n\n" + document.getElementById('journal-input-module').value;
             }
-            saveToVault(appState.activeModule, content);
+            saveToVault(state_module, content);
         }
 
         function saveToVault(type, content) {
-            const entry = { date: new Date(), type: type, content: content, pattern: appState.currentResult.pattern, intensity: appState.patternInput.intensity };
+            const entry = { date: new Date(), type: type, content: content, pattern: state_result.pattern, intensity: state_intensity };
             const vault = JSON.parse(localStorage.getItem('lunaVault') || '[]');
             vault.unshift(entry);
             localStorage.setItem('lunaVault', JSON.stringify(vault));
@@ -424,20 +436,20 @@
         
         function checkCode() {
             if (document.getElementById('accessCode').value.toUpperCase() === 'LUNA2025') {
-                appState.isPremium = true; localStorage.setItem('lunaPremium', 'true');
+                state_premium = true; localStorage.setItem('lunaPremium', 'true');
                 alert("Unlocked!"); closePaywall(); document.getElementById('upgradeBtn').classList.add('hidden');
             } else { alert("Incorrect Code"); }
         }
 
         function resetFlow() {
-            appState.patternInput = { vent: "", intensity: 5, behavior: "" };
+            state_vent = ""; state_intensity = 5;
             document.getElementById('in-vent').value = "";
             document.getElementById('in-behavior').value = "";
             navigateTo('screen-home');
         }
 
-        // Init
-        if(appState.isPremium) document.getElementById('upgradeBtn').classList.add('hidden');
+        // --- INIT ---
+        if(state_premium) document.getElementById('upgradeBtn').classList.add('hidden');
         navigateTo('screen-home');
 
     </script>
