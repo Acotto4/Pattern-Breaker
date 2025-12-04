@@ -15,6 +15,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script>
+        window.onerror = function(msg, url, line) {
+            // Only alert if it's not a minor resizing error
+            if (msg.indexOf('ResizeObserver') === -1) {
+                alert("System Error: " + msg);
+            }
+            return true;
+        };
+    </script>
+
+    <script>
         tailwind.config = {
             darkMode: 'class',
             theme: { extend: { colors: { sage: { 50: '#f4f7f4', 100: '#E8EDE6', 500: '#8A9A5B', 600: '#738249', 700: '#5F6F46', 900: '#2f3823' }, sand: '#F5F5F0' } } }
@@ -24,7 +34,7 @@
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #F5F5F0; -webkit-tap-highlight-color: transparent; }
         .hidden { display: none !important; }
-        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         #toast { visibility: hidden; min-width: 250px; transform: translateX(-50%); background-color: #2f3823; color: #fff; text-align: center; border-radius: 50px; padding: 12px 24px; position: fixed; z-index: 100; left: 50%; bottom: 30px; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; transition: opacity 0.3s, bottom 0.3s; }
@@ -74,7 +84,7 @@
                 <button onclick="navigateTo('screen-rewrite')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700"><i class="fas fa-pen-fancy mr-2"></i>Rewrite</button>
             </div>
             
-            <p class="text-center text-xs text-gray-300 mt-8">v12.1</p>
+            <p class="text-center text-xs text-gray-300 mt-8">v13.0</p>
         </div>
 
         <div id="screen-checkin" class="hidden fade-in">
@@ -220,7 +230,7 @@
             </div>
             
             <div class="mt-8 text-center border-t pt-6">
-                 <p class="text-xs text-gray-400 mb-2">Version 12.1</p>
+                 <p class="text-xs text-gray-400 mb-2">Version 13.0</p>
                  <a href="https://angel-s-site-4148.thinkific.com/courses/understanding-relationship-patterns" target="_blank" class="text-sage-600 font-bold text-sm">Visit Course Page</a>
             </div>
             
@@ -252,14 +262,78 @@
         let state_result = null;
         let state_module = null;
 
+        // --- 2. DECODER ENGINE (Deep Wisdom) ---
         const LOGIC_DB = {
-            'hyper_independence': { name: "Hyper Independence", subtype: "Protection Mode", what: "You are pushing others away...", why: "Early on, you learned no one was coming...", interrupt: ["Drop shoulders.", "Say 'It is safe.'"], practice: "Ask for help.", anchor: "I do not have to carry it all.", prompt: "What am I afraid will happen if I admit I need support?" },
-            'panic_clinging': { name: "Anxious Grasping", subtype: "Fight Mode", what: "Your nervous system is screaming...", why: "Attachment wound touched...", interrupt: ["Phone down.", "Hands on wall."], practice: "Hand on chest.", anchor: "Safety inside me.", prompt: "What am I trying to earn from them?" },
-            'shutdown': { name: "Emotional Shutdown", subtype: "Freeze Mode", what: "Going numb. Foggy.", why: "Learned disappearance.", interrupt: ["Shake hands.", "Blanket wrap."], practice: "Name 3 colors.", anchor: "Safe in body.", prompt: "What feeling am I numbing?" },
-            'over_explaining': { name: "Over-Explaining", subtype: "Fawn Mode", what: "Over-talking to manage emotion.", why: "Needs were 'too much'.", interrupt: ["Stop talking.", "Tongue to roof."], practice: "Count to 5.", anchor: "No need to explain.", prompt: "Where am I shrinking?" },
-            'over_giving': { name: "Over Giving", subtype: "Fawn Mode", what: "Pouring out energy.", why: "Love conditional on utility.", interrupt: ["Clench fists.", "Ask why."], practice: "Say No.", anchor: "Value not in provision.", prompt: "What am I trying to buy?" },
-            'distrust': { name: "Hyper-Vigilance", subtype: "Scan Mode", what: "Waiting for other shoe.", why: "Chaos familiar.", interrupt: ["Look for safety.", "Fact check."], practice: "Write facts vs story.", anchor: "I can trust myself.", prompt: "What story am I inventing?" },
-            'self_blame': { name: "Internalized Blame", subtype: "Shame Mode", what: "Taking 100% responsibility.", why: "Better bad than unsafe.", interrupt: ["Say 'Not my fault'.", "Push feet."], practice: "Compassion.", anchor: "I am not problem.", prompt: "What responsibility isn't mine?" }
+            'hyper_independence': { 
+                name: "Hyper Independence", 
+                subtype: "Protection Mode", 
+                what: "You are pushing others away to maintain control. Your system registers 'needing' as 'unsafe'. You are fortifying your walls because vulnerability feels like a threat.", 
+                why: "This isn't about strength; it's a survival strategy. Early on, you likely learned that no one was coming to save you, so you decided to become your own savior. Your nervous system imprinted 'aloneness' as the only safety.", 
+                interrupt: ["Drop your shoulders. Unclench your jaw.", "Say out loud: 'It is safe to let people in, just a little.'", "Lean back into your chair and let it support you."], 
+                practice: "The 5% Rule: Ask for help with one tiny thing today. It can be as simple as asking someone to pass the salt. Notice that you survived the request.", 
+                anchor: "I do not have to carry it all to be safe.", 
+                prompt: "What story am I telling myself about what will happen if I admit I need support right now?" 
+            },
+            'panic_clinging': { 
+                name: "Anxious Grasping", 
+                subtype: "Fight Mode Activation", 
+                what: "Your nervous system is screaming. You feel an urgent, frantic need to 'fix' the connection immediately. This is not love; this is a fight response to the threat of abandonment.", 
+                why: "This is an attachment wound being touched. Your child-self learned that 'distance' meant 'danger'. Your body is mobilizing energy to bridge the gap because it feels life-threatening.", 
+                interrupt: ["Put the phone down. Walk into another room immediately.", "Push your hands hard against a wall for 10 seconds to discharge the adrenaline.", "Splash cold water on your face to reset your vagus nerve."], 
+                practice: "Self-Soothing: Place a hand on your chest and say 'I am here with you. I am not leaving you.' Repeat until your breathing slows.", 
+                anchor: "My safety is inside me, not in their response.", 
+                prompt: "What am I trying to earn from them right now that I can give to myself?" 
+            },
+            'shutdown': { 
+                name: "Emotional Shutdown", 
+                subtype: "Freeze/Collapse Mode", 
+                what: "You are going numb. You feel foggy, distant, or 'checked out'. This is your system pulling the emergency brake to protect you from overwhelming pain.", 
+                why: "This is a learned survival strategy. When things got too heavy or scary in the past, your only option was to disappear inside yourself. You are not broken; you are protecting your core.", 
+                interrupt: ["Shake your hands vigorously for 30 seconds.", "Wrap yourself tightly in a heavy blanket (burrito wrap).", "Stomp your feet on the ground 10 times."], 
+                practice: "Orientation: Name 3 colors you see in the room out loud. Then name 3 textures you can feel. Bring your brain back to the present moment.", 
+                anchor: "It is safe to be in my body. I am right here.", 
+                prompt: "What specific emotion am I numbing out to avoid feeling right now?" 
+            },
+            'over_explaining': { 
+                name: "Over-Explaining", 
+                subtype: "Fawn/Appeasement Mode", 
+                what: "You are over-talking and over-giving to manage the other person's emotions. You believe if you explain yourself perfectly, you won't be rejected.", 
+                why: "You learned that your needs were 'too much' or unsafe. You survived by becoming easy, manageable, and 'good'. You are abandoning your truth to keep the peace.", 
+                interrupt: ["Stop talking. Take a breath.", "Say: 'I've said enough.'", "Press your tongue to the roof of your mouth to stop the urge to speak."], 
+                practice: "The Pause: Count to 5 before responding to anything today. Allow silence to exist without filling it.", 
+                anchor: "I do not need to explain my existence to be worthy.", 
+                prompt: "Where am I shrinking myself to make someone else comfortable?" 
+            },
+            'over_giving': { 
+                name: "Over Giving", 
+                subtype: "Fawn/Appeasement", 
+                what: "You are pouring out energy and resources to ensure you are 'needed.' You are preemptively paying a debt you don't owe.", 
+                why: "You learned that love was conditional on your utility. If you stop giving, you fear you will become disposable.", 
+                interrupt: ["Clench your fists, then release.", "Ask yourself: 'Do I actually want to do this, or am I just afraid to say no?'"], 
+                practice: "Say 'No' to one small thing today. It doesn't have to be big. Just reclaim one piece of your energy.", 
+                anchor: "My value is not in what I provide. I am enough.", 
+                prompt: "What am I trying to buy with my generosity?" 
+            },
+            'distrust': { 
+                name: "Hyper-Vigilance", 
+                subtype: "Scan Mode", 
+                what: "You are waiting for the other shoe to drop. You are analyzing tone, timing, and words, looking for betrayal or rejection.", 
+                why: "Chaos feels familiar to you; stability feels suspicious. Your nervous system is wired to scan for danger because you weren't protected in the past.", 
+                interrupt: ["Look around the room. Find 3 cues of safety (a locked door, a cozy chair).", "Fact-check: What is real vs. what is my fear imagining?"], 
+                practice: "Reality Testing: Write down the facts in one column and your 'story' in the other. See the difference.", 
+                anchor: "I can trust myself to handle whatever happens.", 
+                prompt: "What story am I inventing to prepare myself for pain?" 
+            },
+            'self_blame': { 
+                name: "Internalized Blame", 
+                subtype: "Shame Mode", 
+                what: "You are taking 100% of the responsibility for the disconnection. You are turning the anger inward on yourself.", 
+                why: "As a child, it was safer to believe 'I am bad' (which I can fix) than 'My caregiver is unsafe' (which is terrifying). You are blaming yourself to maintain a sense of control.", 
+                interrupt: ["Say out loud: 'This is not all my fault.'", "Push your feet firmly into the floor.", "Release the tension in your stomach."], 
+                practice: "Compassion: Talk to yourself like you would talk to your best friend who made a mistake.", 
+                anchor: "I am not the problem. I am worthy of repair.", 
+                prompt: "What responsibility am I carrying that actually belongs to someone else?" 
+            }
         };
 
         // --- 2. GLOBAL FUNCTIONS ---
@@ -280,29 +354,18 @@
         }
 
         function runDecoder() {
-            // SAFE MODE: Check if elements exist
-            const behaviorEl = document.getElementById('in-behavior');
-            const ventEl = document.getElementById('in-vent');
-            const intensityEl = document.getElementById('in-intensity');
+            try {
+                const b = document.getElementById('in-behavior').value;
+                if(!b) return alert("Please select a behavior.");
+                
+                state_vent = document.getElementById('in-vent').value;
+                state_intensity = document.getElementById('in-intensity').value;
 
-            if (!behaviorEl || !ventEl || !intensityEl) {
-                alert("System Error: Inputs not found.");
-                return;
-            }
+                // Loading UI
+                document.getElementById('decode-btn-text').innerText = "Analyzing...";
+                document.getElementById('decode-spinner').classList.remove('hidden');
 
-            const b = behaviorEl.value;
-            if(!b) return alert("Please select a behavior.");
-            
-            state_vent = ventEl.value;
-            state_intensity = intensityEl.value;
-
-            // Loading UI
-            document.getElementById('decode-btn-text').innerText = "Analyzing...";
-            document.getElementById('decode-spinner').classList.remove('hidden');
-
-            setTimeout(() => {
-                // INNER TRY/CATCH for Async Safety
-                try {
+                setTimeout(() => {
                     const data = LOGIC_DB[b] || LOGIC_DB['panic_clinging'];
                     
                     state_result = {
@@ -325,16 +388,15 @@
                     if(document.getElementById('out-why')) document.getElementById('out-why').innerText = state_result.why;
 
                     // Navigate
-                    navigateTo('screen-decode');
-
-                } catch (e) {
-                    alert("Analysis Error: " + e.message);
-                } finally {
-                    // Always Reset Button
                     document.getElementById('decode-btn-text').innerText = "Decode My Pattern";
                     document.getElementById('decode-spinner').classList.add('hidden');
-                }
-            }, 800);
+                    navigateTo('screen-decode');
+
+                }, 800);
+
+            } catch (e) {
+                alert("Analysis Error: " + e.message);
+            }
         }
 
         function showModule(type) {
@@ -346,7 +408,7 @@
             const r = state_result;
             let content = "";
             
-            if (type === "Pattern Interrupter") content = r.interrupt[Math.floor(Math.random() * r.interrupt.length)];
+            if (type === "Pattern Interrupter") content = Array.isArray(r.interrupt) ? r.interrupt[Math.floor(Math.random() * r.interrupt.length)] : r.interrupt;
             else if (type === "Daily Practice") content = r.practice;
             else if (type === "Anchor for Today") content = `"${r.anchor}"`;
             else if (type === "Journal Prompt") content = r.prompt;
@@ -364,9 +426,12 @@
 
         function regenerate(type) {
             const r = state_result;
-            const next = r.interrupt[Math.floor(Math.random() * r.interrupt.length)];
-            document.getElementById('mod-interrupt-text').innerText = next;
-            showToast("Refreshed");
+            // Only regeneration for Interrupter in this version to keep logic simple
+            if (type === 'interrupt' && Array.isArray(r.interrupt)) {
+                const next = r.interrupt[Math.floor(Math.random() * r.interrupt.length)];
+                document.getElementById('mod-interrupt-text').innerText = next;
+                showToast("Refreshed");
+            }
         }
 
         function runRewrite() {
