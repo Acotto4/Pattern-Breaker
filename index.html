@@ -27,22 +27,22 @@
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: #fff; border: 2px solid currentColor; cursor: pointer; margin-top: -10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #E8EDE6; border-radius: 2px; }
-        
         #toast { visibility: hidden; min-width: 250px; transform: translateX(-50%); background-color: #2f3823; color: #fff; text-align: center; border-radius: 50px; padding: 12px 24px; position: fixed; z-index: 100; left: 50%; bottom: 30px; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; transition: opacity 0.3s, bottom 0.3s; }
         #toast.show { visibility: visible; opacity: 1; bottom: 50px; }
+        
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: #fff; border: 2px solid currentColor; cursor: pointer; margin-top: -10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #E8EDE6; border-radius: 2px; }
     </style>
 </head>
 <body class="text-gray-800 min-h-screen flex flex-col mx-auto max-w-md bg-sand transition-colors duration-300">
 
     <nav class="w-full bg-sage-500 text-white p-4 shadow-md flex justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center gap-2 cursor-pointer" onclick="App.navigateTo('screen-home')">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('screen-home')">
             <h1 class="font-semibold text-lg tracking-wide">Pattern Breaker</h1>
         </div>
         <div class="flex gap-3">
-             <button id="upgradeBtn" onclick="UI.showPaywall()" class="bg-white text-sage-700 px-3 py-1 rounded text-xs font-bold shadow hidden">Upgrade</button>
-             <button onclick="App.navigateTo('screen-settings')" class="hover:text-sage-200"><i class="fas fa-cog"></i></button>
+             <button id="upgradeBtn" onclick="showPaywall()" class="bg-white text-sage-700 px-3 py-1 rounded text-xs font-bold shadow hidden">Upgrade</button>
+             <button onclick="navigateTo('screen-settings')" class="hover:text-sage-200"><i class="fas fa-cog"></i></button>
         </div>
     </nav>
 
@@ -61,7 +61,7 @@
                 </p>
             </div>
             
-            <button onclick="App.startCheckIn()" class="w-full bg-sage-500 hover:bg-sage-600 text-white font-bold py-4 rounded-xl shadow-lg transition transform hover:scale-105 mb-4">
+            <button onclick="navigateTo('screen-checkin')" class="w-full bg-sage-500 hover:bg-sage-600 text-white font-bold py-4 rounded-xl shadow-lg transition transform hover:scale-105 mb-4">
                 Start Check-In
             </button>
 
@@ -70,11 +70,11 @@
             </a>
 
             <div class="grid grid-cols-2 gap-3">
-                <button onclick="App.navigateTo('screen-vault')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700"><i class="fas fa-book mr-2"></i>Vault</button>
-                <button onclick="App.navigateTo('screen-rewrite')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700"><i class="fas fa-pen-fancy mr-2"></i>Rewrite</button>
+                <button onclick="navigateTo('screen-vault')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700"><i class="fas fa-book mr-2"></i>Vault</button>
+                <button onclick="navigateTo('screen-rewrite')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700"><i class="fas fa-pen-fancy mr-2"></i>Rewrite</button>
             </div>
             
-            <p class="text-center text-xs text-gray-300 mt-8">v10.1</p>
+            <p class="text-center text-xs text-gray-300 mt-8">v11.1</p>
         </div>
 
         <div id="screen-checkin" class="hidden fade-in">
@@ -82,7 +82,7 @@
             
             <div class="mb-6">
                 <label class="block text-xs font-bold text-gray-400 uppercase mb-2">What's happening? (Vent here)</label>
-                <textarea id="in-vent" rows="3" class="w-full p-4 bg-white border border-sage-200 rounded-xl text-base outline-none shadow-sm" placeholder="I'm spiraling because..."></textarea>
+                <textarea id="in-vent" oninput="appState.patternInput.vent = this.value" rows="3" class="w-full p-4 bg-white border border-sage-200 rounded-xl text-base outline-none shadow-sm" placeholder="I'm spiraling because..."></textarea>
             </div>
 
             <div class="mb-8">
@@ -91,7 +91,7 @@
                     <span id="intensity-val" class="font-bold text-sage-600 text-lg">5</span>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-sage-200">
-                    <input type="range" id="in-intensity" min="1" max="10" value="5" oninput="UI.updateSlider(this)">
+                    <input type="range" id="in-intensity" min="1" max="10" value="5" oninput="updateSlider(this)">
                     <div class="flex justify-between text-xs text-gray-400 mt-2"><span>Low</span><span>Severe</span></div>
                 </div>
             </div>
@@ -110,13 +110,13 @@
                 </select>
             </div>
 
-            <button onclick="Decoder.run()" class="w-full bg-sage-500 hover:bg-sage-600 text-white font-bold py-4 rounded-xl shadow-lg mt-4 flex justify-center items-center gap-2">
+            <button onclick="runDecoder()" class="w-full bg-sage-500 hover:bg-sage-600 text-white font-bold py-4 rounded-xl shadow-lg mt-4 flex justify-center items-center gap-2">
                 <span id="decode-btn-text">Decode My Pattern</span>
                 <i id="decode-spinner" class="fas fa-spinner fa-spin hidden"></i>
             </button>
         </div>
 
-        <div id="screen-report" class="hidden fade-in pb-10">
+        <div id="screen-decode" class="hidden fade-in pb-10">
             <div class="bg-sage-100 p-6 rounded-xl mb-6 border-l-4 border-sage-500 shadow-sm relative">
                 <p class="text-xs uppercase tracking-widest text-gray-500 mb-1">Detected Pattern</p>
                 <h2 id="out-pattern" class="text-2xl font-bold text-sage-800 mb-2">...</h2>
@@ -155,7 +155,7 @@
                 </button>
             </div>
             
-            <button onclick="Vault.saveResult()" class="w-full text-center text-sage-600 text-sm font-bold mb-4">Save Result to Vault</button>
+            <button onclick="saveResultToVault()" class="w-full text-center text-sage-600 text-sm font-bold mb-4">Save Result to Vault</button>
             <button onclick="resetFlow()" class="w-full text-center text-gray-400 text-sm">Start Next Decode</button>
         </div>
 
@@ -170,7 +170,7 @@
             </div>
 
             <button onclick="saveModuleToVault()" class="w-full bg-sage-500 text-white font-bold py-3 rounded-xl shadow-lg mb-3">Save to Vault</button>
-            <button onclick="App.navigateTo('screen-report')" class="w-full text-gray-400 text-sm text-center">Back to Result</button>
+            <button onclick="navigateTo('screen-decode')" class="w-full text-gray-400 text-sm text-center">Back to Result</button>
         </div>
 
         <div id="screen-rewrite" class="hidden fade-in">
@@ -179,28 +179,30 @@
                 <p class="text-xs text-gray-500 mb-2">Paste the anxious/angry text you *want* to send. We will rewrite it from a regulated state.</p>
                 <textarea id="rewrite-input" rows="4" class="w-full p-3 border border-gray-200 rounded-lg text-sm bg-gray-50" placeholder="e.g. Why are you ignoring me?? I need an answer now."></textarea>
             </div>
-            <button onclick="Rewrite.generate()" class="w-full bg-sage-500 text-white font-bold py-3 rounded-xl shadow-lg mb-6">Rewrite It</button>
+            <button onclick="runRewrite()" class="w-full bg-sage-500 text-white font-bold py-3 rounded-xl shadow-lg mb-6">Rewrite It</button>
             
             <div id="rewrite-output" class="hidden">
                 <h3 class="text-sm font-bold text-sage-700 mb-2">Try this instead:</h3>
                 <div class="bg-sage-50 p-4 rounded-xl border border-sage-200 mb-4">
                     <p id="rewrite-result" class="text-sage-900 font-medium">...</p>
                 </div>
-                <button onclick="UI.copyToClipboard('rewrite-result')" class="text-xs text-gray-400 underline w-full text-center">Copy to Clipboard</button>
+                <button onclick="copyToClipboard('rewrite-result')" class="text-xs text-gray-400 underline w-full text-center">Copy to Clipboard</button>
             </div>
             
-            <button onclick="App.navigateTo('screen-home')" class="w-full text-center text-gray-400 text-sm mt-6">Back Home</button>
+            <button onclick="navigateTo('screen-home')" class="w-full text-center text-gray-400 text-sm mt-6">Back Home</button>
         </div>
 
         <div id="screen-vault" class="hidden fade-in">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold text-sage-700">The Vault</h2>
-                <button onclick="App.navigateTo('screen-home')" class="text-sm text-gray-400">Back</button>
+                <button onclick="navigateTo('screen-home')" class="text-sm text-gray-400">Back</button>
             </div>
+            
             <div class="relative mb-4">
                 <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-                <input type="text" id="vault-search" onkeyup="Vault.render()" placeholder="Search entries..." class="w-full pl-10 p-2 bg-white border border-gray-200 rounded-lg text-sm">
+                <input type="text" id="vault-search" onkeyup="renderVault()" placeholder="Search entries..." class="w-full pl-10 p-2 bg-white border border-gray-200 rounded-lg text-sm">
             </div>
+
             <div id="vault-list" class="space-y-4 pb-20"></div>
         </div>
 
@@ -209,18 +211,20 @@
             <div class="bg-white rounded-xl shadow divide-y divide-gray-100">
                 <div class="p-4 flex justify-between items-center">
                     <span>Dark Mode</span>
-                    <button onclick="UI.toggleDark()" class="text-sage-500 font-bold text-xs">Toggle</button>
+                    <button onclick="toggleDark()" class="text-sage-500 font-bold text-xs">Toggle</button>
                 </div>
                 <div class="p-4 flex justify-between items-center">
                     <span class="text-red-400">Clear Data</span>
-                    <button onclick="Vault.clear()" class="text-red-500 font-bold text-xs">Clear</button>
+                    <button onclick="clearVault()" class="text-red-500 font-bold text-xs">Clear</button>
                 </div>
             </div>
+            
             <div class="mt-8 text-center border-t pt-6">
-                 <p class="text-xs text-gray-400 mb-2">Version 10.1</p>
+                 <p class="text-xs text-gray-400 mb-2">Version 11.1</p>
                  <a href="https://angel-s-site-4148.thinkific.com/courses/understanding-relationship-patterns" target="_blank" class="text-sage-600 font-bold text-sm">Visit Course Page</a>
             </div>
-            <button onclick="App.navigateTo('screen-home')" class="w-full text-center text-gray-400 text-sm mt-6">Back</button>
+            
+            <button onclick="navigateTo('screen-home')" class="w-full text-center text-gray-400 text-sm mt-6">Back</button>
         </div>
 
     </main>
@@ -242,17 +246,16 @@
 
     <script>
         // --- 1. STATE ---
-        const State = {
-            premium: localStorage.getItem('lunaPremium') === 'true',
-            inputs: { vent: "", intensity: 5, behavior: "" },
+        let appState = {
+            isPremium: localStorage.getItem('lunaPremium') === 'true',
+            patternInput: { vent: "", intensity: 5, behavior: "" },
             currentResult: null,
             activeModule: null
         };
 
-        // --- 2. DB ---
         const LOGIC_DB = {
-            'hyper_independence': { name: "Hyper Independence", subtype: "Protection Mode", what: "You are pushing others away...", why: "Early on, you learned...", interrupt: ["Drop shoulders.", "Say 'Safe to let in.'"], practice: "Ask for help.", anchor: "I do not have to carry it all.", prompt: "What am I afraid will happen if I admit I need support?" },
-            'panic_clinging': { name: "Anxious Grasping", subtype: "Fight Mode", what: "System screaming. Need to fix.", why: "Attachment wound touched.", interrupt: ["Phone down.", "Hands on wall."], practice: "Hand on chest.", anchor: "Safety inside me.", prompt: "What am I trying to earn from them?" },
+            'hyper_independence': { name: "Hyper Independence", subtype: "Protection Mode", what: "You are pushing others away...", why: "Early on, you learned no one was coming...", interrupt: ["Drop shoulders.", "Say 'It is safe.'"], practice: "Ask for help.", anchor: "I do not have to carry it all.", prompt: "What am I afraid will happen if I admit I need support?" },
+            'panic_clinging': { name: "Anxious Grasping", subtype: "Fight Mode", what: "Your nervous system is screaming...", why: "Attachment wound touched...", interrupt: ["Phone down.", "Hands on wall."], practice: "Hand on chest.", anchor: "Safety inside me.", prompt: "What am I trying to earn from them?" },
             'shutdown': { name: "Emotional Shutdown", subtype: "Freeze Mode", what: "Going numb. Foggy.", why: "Learned disappearance.", interrupt: ["Shake hands.", "Blanket wrap."], practice: "Name 3 colors.", anchor: "Safe in body.", prompt: "What feeling am I numbing?" },
             'over_explaining': { name: "Over-Explaining", subtype: "Fawn Mode", what: "Over-talking to manage emotion.", why: "Needs were 'too much'.", interrupt: ["Stop talking.", "Tongue to roof."], practice: "Count to 5.", anchor: "No need to explain.", prompt: "Where am I shrinking?" },
             'over_giving': { name: "Over Giving", subtype: "Fawn Mode", what: "Pouring out energy.", why: "Love conditional on utility.", interrupt: ["Clench fists.", "Ask why."], practice: "Say No.", anchor: "Value not in provision.", prompt: "What am I trying to buy?" },
@@ -260,185 +263,182 @@
             'self_blame': { name: "Internalized Blame", subtype: "Shame Mode", what: "Taking 100% responsibility.", why: "Better bad than unsafe.", interrupt: ["Say 'Not my fault'.", "Push feet."], practice: "Compassion.", anchor: "I am not problem.", prompt: "What responsibility isn't mine?" }
         };
 
-        // --- 3. CONTROLLERS ---
-        const Decoder = {
-            run: function() {
-                try {
-                    const b = document.getElementById('in-behavior').value;
-                    if(!b) return alert("Please select a behavior.");
-                    
-                    State.inputs.behavior = b;
-                    State.inputs.vent = document.getElementById('in-vent').value;
-                    
-                    UI.setLoading(true);
-                    setTimeout(() => {
-                        const data = LOGIC_DB[b] || LOGIC_DB['panic_clinging'];
-                        State.currentResult = { ...data, date: new Date(), intensity: State.inputs.intensity };
-                        Decoder.populateReport();
-                        UI.setLoading(false);
-                        App.navigateTo('screen-report'); // Fixed Target
-                    }, 800);
-                } catch(e) { alert(e.message); UI.setLoading(false); }
-            },
-            populateReport: function() {
-                const r = State.currentResult;
-                UI.setText('out-pattern', r.name);
-                UI.setText('out-subtype', r.subtype);
-                UI.setText('out-badge', `Intensity: ${r.intensity}`);
-                UI.setText('out-what', r.what);
-                UI.setText('out-why', r.why);
-                
-                // Set initial random tools for regeneration later
-                r.currentInterrupt = r.interrupt[0];
-                r.currentPractice = r.practice; // Simplified for array/string handling
-                r.currentAnchor = r.anchor;
-                r.currentPrompt = r.prompt;
-            },
-            regenerate: function(type) {
-                const r = State.currentResult;
-                // Simple regen logic
-                if(type === 'interrupt') {
-                    const next = r.interrupt[Math.floor(Math.random() * r.interrupt.length)];
-                    document.getElementById('mod-interrupt-text').innerText = next;
-                }
-                UI.toast("Refreshed");
-            }
-        };
-
-        const Rewrite = {
-            generate: function() {
-                const input = document.getElementById('rewrite-input').value;
-                if(!input) return;
-                document.getElementById('rewrite-result').innerText = "I'm feeling overwhelmed. Can we talk later?";
-                document.getElementById('rewrite-output').classList.remove('hidden');
-            }
-        };
-
-        const Vault = {
-            data: JSON.parse(localStorage.getItem('lunaVault') || '[]'),
-            saveResult: function() {
-                if(!State.premium) return UI.showPaywall();
-                Vault.add({ type: 'Result', title: State.currentResult.name, body: State.currentResult.what });
-            },
-            saveJournal: function() { // Fallback if called
-                Vault.add({ type: 'Journal', title: 'Entry', body: "..." });
-            },
-            add: function(entry) {
-                entry.date = new Date();
-                entry.intensity = State.inputs.intensity;
-                Vault.data.unshift(entry);
-                localStorage.setItem('lunaVault', JSON.stringify(Vault.data));
-                UI.toast("Saved");
-            },
-            render: function() {
-                const list = document.getElementById('vault-list');
-                if(Vault.data.length === 0) list.innerHTML = '<p class="text-center text-gray-400 mt-10">Empty.</p>';
-                else list.innerHTML = Vault.data.map((e,i) => `<div class="bg-white p-4 rounded shadow mb-3"><p class="font-bold">${e.title}</p><p class="text-xs">${new Date(e.date).toLocaleDateString()}</p></div>`).join('');
-            },
-            clear: function() {
-                localStorage.removeItem('lunaVault');
-                Vault.data = [];
-                window.location.reload();
-            },
-            delete: function(i) {
-                Vault.data.splice(i, 1);
-                localStorage.setItem('lunaVault', JSON.stringify(Vault.data));
-                Vault.render();
-            },
-            exportPDF: function(i) { alert("PDF Exporting..."); }
-        };
-
-        const UI = {
-            setText: (id, val) => document.getElementById(id).innerText = val,
-            setLoading: (on) => {
-                document.getElementById('decode-btn-text').innerText = on ? "Analyzing..." : "Decode My Pattern";
-                document.getElementById('decode-spinner').classList.toggle('hidden', !on);
-            },
-            toast: (msg) => {
-                const t = document.getElementById('toast');
-                t.innerText = msg; t.className = "show";
-                setTimeout(() => t.className = t.className.replace("show", ""), 3000);
-            },
-            updateSlider: (el) => document.getElementById('intensity-val').innerText = el.value,
-            showPaywall: () => document.getElementById('paywallModal').classList.remove('hidden'),
-            closePaywall: () => document.getElementById('paywallModal').classList.add('hidden'),
-            toggleDark: () => document.documentElement.classList.toggle('dark'),
-            copyToClipboard: (id) => navigator.clipboard.writeText(document.getElementById(id).innerText)
-        };
-
-        const App = {
-            navigateTo: function(screenId) {
-                const progressMap = { 'screen-home': '0%', 'screen-checkin': '33%', 'screen-report': '66%', 'screen-module': '100%' };
-                const fill = document.getElementById('progress-fill');
-                const bar = document.getElementById('progress-container');
-                
-                if (progressMap[screenId]) {
-                    bar.classList.remove('hidden');
-                    setTimeout(() => fill.style.width = progressMap[screenId], 50);
-                } else { bar.classList.add('hidden'); }
-
-                document.querySelectorAll('main > div').forEach(el => el.classList.add('hidden'));
-                document.getElementById(screenId).classList.remove('hidden');
-                
-                if(screenId === 'screen-vault') Vault.render();
-            },
-            startCheckIn: () => App.navigateTo('screen-checkin'),
-            checkCode: () => {
-                if (document.getElementById('accessCode').value.toUpperCase() === 'LUNA2025') {
-                    State.premium = true; localStorage.setItem('lunaPremium', 'true');
-                    alert("Unlocked!"); UI.closePaywall(); document.getElementById('upgradeBtn').classList.add('hidden');
-                } else { alert("Incorrect Code"); }
-            }
-        };
-
-        function showModule(moduleName) {
-            if (moduleName === 'Journal Prompt' && !State.premium) return UI.showPaywall();
-
-            State.activeModule = moduleName;
-            document.getElementById('mod-title').innerText = moduleName;
+        // --- 2. GLOBAL FUNCTIONS (No Objects = No Bugs) ---
+        
+        function navigateTo(id) {
+            document.querySelectorAll('main > div').forEach(el => el.classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
             
-            const r = State.currentResult;
+            const bar = document.getElementById('progress-container');
+            const fill = document.getElementById('progress-fill');
+            const progress = { 'screen-home': '0%', 'screen-checkin': '33%', 'screen-decode': '66%', 'screen-regulate': '100%' }[id];
+            
+            if (progress && progress !== '0%') {
+                bar.classList.remove('hidden');
+                setTimeout(() => fill.style.width = progress, 50);
+            } else { bar.classList.add('hidden'); }
+
+            if(id === 'screen-vault') renderVault();
+        }
+
+        function runDecoder() {
+            try {
+                const b = document.getElementById('in-behavior').value;
+                if(!b) return alert("Please select a behavior.");
+                
+                appState.patternInput.behavior = b;
+                appState.patternInput.vent = document.getElementById('in-vent').value;
+                appState.patternInput.intensity = document.getElementById('in-intensity').value;
+
+                // Loading
+                document.getElementById('decode-btn-text').innerText = "Analyzing...";
+                document.getElementById('decode-spinner').classList.remove('hidden');
+
+                setTimeout(() => {
+                    const data = LOGIC_DB[b] || LOGIC_DB['panic_clinging'];
+                    
+                    appState.currentResult = {
+                        pattern: data.name,
+                        subtype: `${data.subtype} • Intensity: ${appState.patternInput.intensity}`,
+                        what: data.what,
+                        why: data.why,
+                        interrupt: data.interrupt,
+                        practice: data.practice,
+                        anchor: data.anchor,
+                        prompt: data.prompt,
+                        date: new Date()
+                    };
+
+                    document.getElementById('out-pattern').innerText = appState.currentResult.pattern;
+                    document.getElementById('out-subtype').innerText = appState.currentResult.subtype;
+                    document.getElementById('out-badge').innerText = "Intensity: " + appState.patternInput.intensity;
+                    document.getElementById('out-what').innerText = appState.currentResult.what;
+                    document.getElementById('out-why').innerText = appState.currentResult.why;
+
+                    document.getElementById('decode-btn-text').innerText = "Decode My Pattern";
+                    document.getElementById('decode-spinner').classList.add('hidden');
+
+                    navigateTo('screen-decode');
+                }, 800);
+
+            } catch (e) { alert("Error: " + e.message); setLoading(false); }
+        }
+
+        function showModule(type) {
+            if (type === 'Journal Prompt' && !appState.isPremium) return showPaywall();
+            
+            appState.activeModule = type;
+            document.getElementById('mod-title').innerText = type;
+            
+            const r = appState.currentResult;
             let content = "";
             
-            if (moduleName === "Pattern Interrupter") content = r.currentInterrupt || r.interrupt[0];
-            else if (moduleName === "Daily Practice") content = r.practice;
-            else if (moduleName === "Anchor for Today") content = `"${r.anchor}"`;
-            else if (moduleName === "Journal Prompt") content = r.prompt;
+            if (type === "Pattern Interrupter") content = r.interrupt[Math.floor(Math.random() * r.interrupt.length)];
+            else if (type === "Daily Practice") content = r.practice;
+            else if (type === "Anchor for Today") content = `"${r.anchor}"`;
+            else if (type === "Journal Prompt") content = r.prompt;
 
             document.getElementById('mod-content').innerText = content;
 
-            const journalArea = document.getElementById('journal-area');
-            if (moduleName === 'Journal Prompt') {
-                journalArea.classList.remove('hidden');
-                const vent = State.inputs.vent || "";
-                document.getElementById('journal-input-module').value = vent ? `[Initial Vent]: ${vent}\n\n` : ""; 
-            } else {
-                journalArea.classList.add('hidden');
-            }
+            const jArea = document.getElementById('journal-area');
+            if (type === 'Journal Prompt') {
+                jArea.classList.remove('hidden');
+                const vent = appState.patternInput.vent;
+                document.getElementById('journal-input-module').value = vent ? `[Initial Vent]: ${vent}\n\n` : "";
+            } else { jArea.classList.add('hidden'); }
 
-            App.navigateTo('screen-module');
+            navigateTo('screen-module');
+        }
+
+        function regenerate(type) {
+            const r = appState.currentResult;
+            const next = r.interrupt[Math.floor(Math.random() * r.interrupt.length)];
+            document.getElementById('mod-interrupt-text').innerText = next;
+            showToast("Refreshed");
+        }
+
+        function runRewrite() {
+            const text = document.getElementById('rewrite-input').value;
+            if(!text) return;
+            document.getElementById('rewrite-result').innerText = "I'm feeling overwhelmed right now and need to pause. Let's connect when I'm calm.";
+            document.getElementById('rewrite-output').classList.remove('hidden');
+        }
+
+        function saveResultToVault() {
+            if(!appState.isPremium) return showPaywall();
+            saveToVault("Pattern Result", appState.currentResult.pattern);
         }
 
         function saveModuleToVault() {
-            if(!State.premium) return UI.showPaywall();
+            if(!appState.isPremium) return showPaywall();
             let content = document.getElementById('mod-content').innerText;
-            if (State.activeModule === 'Journal Prompt') {
-                const text = document.getElementById('journal-input-module').value;
-                if(!text) return alert("Write something.");
-                content += "\n\n" + text;
+            if (appState.activeModule === 'Journal Prompt') {
+                content += "\n\n" + document.getElementById('journal-input-module').value;
             }
-            Vault.add({ type: State.activeModule, title: State.currentResult.name, body: content });
+            saveToVault(appState.activeModule, content);
+        }
+
+        function saveToVault(type, content) {
+            const entry = { date: new Date(), type: type, content: content, pattern: appState.currentResult.pattern, intensity: appState.patternInput.intensity };
+            const vault = JSON.parse(localStorage.getItem('lunaVault') || '[]');
+            vault.unshift(entry);
+            localStorage.setItem('lunaVault', JSON.stringify(vault));
+            showToast("Saved to Vault");
+        }
+
+        function renderVault() {
+            const term = document.getElementById('vault-search').value.toLowerCase();
+            const vault = JSON.parse(localStorage.getItem('lunaVault') || '[]');
+            const filtered = vault.filter(e => JSON.stringify(e).toLowerCase().includes(term));
+            const list = document.getElementById('vault-list');
+            
+            if(filtered.length === 0) return list.innerHTML = '<p class="text-center text-gray-400 mt-10">Empty.</p>';
+            list.innerHTML = filtered.map((e, i) => `
+                <div class="bg-white p-4 rounded-xl shadow border-l-4 border-sage-500 mb-3 relative">
+                    <div class="flex justify-between mb-2"><span class="font-bold text-gray-800">${e.pattern}</span><span class="text-xs text-gray-400">${new Date(e.date).toLocaleDateString()}</span></div>
+                    <p class="text-xs font-bold text-sage-500 uppercase mb-1">${e.type} (Level ${e.intensity || 5})</p>
+                    <p class="text-sm text-gray-800 whitespace-pre-wrap">${e.content}</p>
+                    <button onclick="deleteEntry(${i})" class="absolute top-2 right-2 text-red-300"><i class="fas fa-times"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function deleteEntry(i) {
+            if(!confirm("Delete?")) return;
+            const vault = JSON.parse(localStorage.getItem('lunaVault') || '[]');
+            vault.splice(i, 1);
+            localStorage.setItem('lunaVault', JSON.stringify(vault));
+            renderVault();
+        }
+
+        function clearVault() {
+            if(confirm("Clear all data?")) { localStorage.removeItem('lunaVault'); location.reload(); }
+        }
+
+        function updateSlider(el) { document.getElementById('intensity-val').innerText = el.value; }
+        function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.className = "show"; setTimeout(() => t.className = "", 3000); }
+        function toggleDark() { document.documentElement.classList.toggle('dark'); }
+        function copyToClipboard(id) { navigator.clipboard.writeText(document.getElementById(id).innerText); showToast("Copied"); }
+        function showPaywall() { document.getElementById('paywallModal').classList.remove('hidden'); }
+        function closePaywall() { document.getElementById('paywallModal').classList.add('hidden'); }
+        
+        function checkCode() {
+            if (document.getElementById('accessCode').value.toUpperCase() === 'LUNA2025') {
+                appState.isPremium = true; localStorage.setItem('lunaPremium', 'true');
+                alert("Unlocked!"); closePaywall(); document.getElementById('upgradeBtn').classList.add('hidden');
+            } else { alert("Incorrect Code"); }
         }
 
         function resetFlow() {
-            State.inputs = { vent: "", intensity: 5, behavior: null };
+            appState.patternInput = { vent: "", intensity: 5, behavior: "" };
             document.getElementById('in-vent').value = "";
             document.getElementById('in-behavior').value = "";
-            App.navigateTo('screen-home');
+            navigateTo('screen-home');
         }
 
-        if(State.premium) document.getElementById('upgradeBtn').classList.add('hidden');
-        App.navigateTo('screen-home');
+        // Init
+        if(appState.isPremium) document.getElementById('upgradeBtn').classList.add('hidden');
+        navigateTo('screen-home');
 
     </script>
 </body>
