@@ -74,6 +74,8 @@
                 <button onclick="App.navigateTo('screen-vault')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700"><i class="fas fa-book mr-2"></i>Vault</button>
                 <button onclick="App.navigateTo('screen-rewrite')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700"><i class="fas fa-pen-fancy mr-2"></i>Rewrite</button>
             </div>
+            
+            <p class="text-center text-xs text-gray-300 mt-8">v10.0</p>
         </div>
 
         <div id="screen-checkin" class="hidden fade-in">
@@ -236,7 +238,7 @@
             </div>
             
             <div class="mt-8 text-center border-t pt-6">
-                 <p class="text-xs text-gray-400 mb-2">Version 9.2</p>
+                 <p class="text-xs text-gray-400 mb-2">Version 10.0</p>
                  <a href="https://angel-s-site-4148.thinkific.com/courses/understanding-relationship-patterns" target="_blank" class="text-sage-600 font-bold text-sm">Visit Course Page</a>
             </div>
             
@@ -268,7 +270,7 @@
             currentResult: null
         };
 
-        // --- 2. DECODER ENGINE (The Brain) ---
+        // --- 2. DECODER ENGINE ---
         const LOGIC_DB = {
             'hyper_independence': { name: "Hyper Independence", subtype: "Protection Mode", 
                 what: "You are pushing others away to maintain control.", why: "Early on, you learned no one was coming to save you.", 
@@ -302,20 +304,25 @@
 
         const Decoder = {
             run: function() {
-                const b = document.getElementById('in-behavior').value;
-                if(!b) return alert("Please select a behavior.");
-                
-                State.inputs.behavior = b;
-                State.inputs.vent = document.getElementById('in-vent').value;
-                
-                UI.setLoading(true);
-                setTimeout(() => {
-                    const data = LOGIC_DB[b] || LOGIC_DB['panic_clinging'];
-                    State.currentResult = { ...data, date: new Date(), intensity: State.inputs.intensity };
-                    Decoder.populateReport();
+                try {
+                    const b = document.getElementById('in-behavior').value;
+                    if(!b) return alert("Please select a behavior.");
+                    
+                    State.inputs.behavior = b;
+                    State.inputs.vent = document.getElementById('in-vent').value;
+                    
+                    UI.setLoading(true);
+                    setTimeout(() => {
+                        const data = LOGIC_DB[b] || LOGIC_DB['panic_clinging'];
+                        State.currentResult = { ...data, date: new Date(), intensity: State.inputs.intensity };
+                        Decoder.populateReport();
+                        UI.setLoading(false);
+                        App.navigateTo('screen-decode');
+                    }, 800);
+                } catch (e) {
+                    alert("Analysis failed: " + e.message);
                     UI.setLoading(false);
-                    App.navigateTo('screen-decode');
-                }, 800);
+                }
             },
             populateReport: function() {
                 const r = State.currentResult;
@@ -336,7 +343,6 @@
             regenerate: function(type) {
                 const r = State.currentResult;
                 if(type === 'interrupt') UI.setText('out-interrupt', r.interrupt[Math.floor(Math.random() * r.interrupt.length)]);
-                // Add more regen logic if needed
                 UI.toast("Refreshed");
             }
         };
@@ -430,7 +436,7 @@
             }
         };
 
-        // --- 5. UI & APP CONTROLLER ---
+        // --- 5. UI CONTROLLER ---
         const UI = {
             setText: (id, val) => document.getElementById(id).innerText = val,
             setLoading: (loading) => {
@@ -460,7 +466,6 @@
 
         const App = {
             navigateTo: function(screenId) {
-                // Progress Bar
                 const progressMap = { 'screen-home': '0%', 'screen-checkin': '33%', 'screen-decode': '66%', 'screen-regulate': '100%', 'screen-integrate': '100%' };
                 const fill = document.getElementById('progress-fill');
                 const bar = document.getElementById('progress-container');
@@ -472,10 +477,8 @@
                     bar.classList.add('hidden');
                 }
 
-                // Switch Screen
                 document.querySelectorAll('main > div').forEach(el => el.classList.add('hidden'));
-                const target = document.getElementById(screenId);
-                if(target) target.classList.remove('hidden');
+                document.getElementById(screenId).classList.remove('hidden');
                 
                 if(screenId === 'screen-vault') Vault.render();
             },
