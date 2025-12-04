@@ -38,12 +38,12 @@
 <body class="text-gray-800 min-h-screen flex flex-col mx-auto max-w-md bg-sand transition-colors duration-300">
 
     <nav class="w-full bg-sage-500 text-white p-4 shadow-md flex justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center gap-2 cursor-pointer" onclick="App.navigateTo('home')">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="App.navigateTo('screen-home')">
             <h1 class="font-semibold text-lg tracking-wide">Pattern Breaker</h1>
         </div>
         <div class="flex gap-3">
              <button id="upgradeBtn" onclick="UI.showPaywall()" class="bg-white text-sage-700 px-3 py-1 rounded text-xs font-bold shadow hidden">Upgrade</button>
-             <button onclick="App.navigateTo('settings')" class="hover:text-sage-200"><i class="fas fa-cog"></i></button>
+             <button onclick="App.navigateTo('screen-settings')" class="hover:text-sage-200"><i class="fas fa-cog"></i></button>
         </div>
     </nav>
 
@@ -71,8 +71,8 @@
             </a>
 
             <div class="grid grid-cols-2 gap-3">
-                <button onclick="App.navigateTo('vault')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700"><i class="fas fa-book mr-2"></i>Vault</button>
-                <button onclick="App.navigateTo('rewrite')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700"><i class="fas fa-pen-fancy mr-2"></i>Rewrite</button>
+                <button onclick="App.navigateTo('screen-vault')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700"><i class="fas fa-book mr-2"></i>Vault</button>
+                <button onclick="App.navigateTo('screen-rewrite')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700"><i class="fas fa-pen-fancy mr-2"></i>Rewrite</button>
             </div>
         </div>
 
@@ -124,6 +124,14 @@
                 </div>
             </div>
 
+            <div class="bg-sage-600 p-5 rounded-xl shadow-lg mb-6 text-white text-center">
+                <h3 class="font-bold text-lg mb-1">Go Deeper</h3>
+                <p class="text-sm opacity-90 mb-3">You've identified the pattern. Now learn how to heal the root cause permanently.</p>
+                <a href="https://angel-s-site-4148.thinkific.com/courses/understanding-relationship-patterns" target="_blank" class="inline-block bg-white text-sage-700 font-bold px-6 py-2 rounded-lg text-sm hover:bg-gray-100 transition">
+                    View Course Modules
+                </a>
+            </div>
+
             <div class="bg-white p-5 rounded-xl shadow-sm mb-6">
                 <h3 class="font-bold text-gray-800 text-sm mb-2 uppercase border-b pb-2">What's Happening</h3>
                 <p id="out-what" class="text-sm text-gray-600 leading-relaxed mb-4">...</p>
@@ -131,7 +139,7 @@
                 <p id="out-why" class="text-sm text-gray-600 leading-relaxed">...</p>
             </div>
 
-            <button onclick="App.navigateTo('regulate')" class="w-full bg-sage-500 text-white font-bold py-3 rounded-xl shadow-lg mb-3">
+            <button onclick="App.navigateTo('screen-regulate')" class="w-full bg-sage-500 text-white font-bold py-3 rounded-xl shadow-lg mb-3">
                 Next: Regulate Nervous System
             </button>
             <button onclick="Vault.saveResult()" class="w-full text-sage-600 text-sm font-bold mb-4">Save Result</button>
@@ -158,10 +166,10 @@
                 <button onclick="Decoder.regenerate('anchor')" class="absolute top-2 right-2 text-gray-300 hover:text-sage-500"><i class="fas fa-sync-alt"></i></button>
             </div>
 
-            <button onclick="App.navigateTo('integrate')" class="w-full bg-sage-500 text-white font-bold py-3 rounded-xl shadow-lg mb-3">
+            <button onclick="App.navigateTo('screen-integrate')" class="w-full bg-sage-500 text-white font-bold py-3 rounded-xl shadow-lg mb-3">
                 Next: Integrate & Journal
             </button>
-            <button onclick="App.navigateTo('decode')" class="w-full text-center text-gray-400 text-sm">Back</button>
+            <button onclick="App.navigateTo('screen-decode')" class="w-full text-center text-gray-400 text-sm">Back</button>
         </div>
 
         <div id="screen-integrate" class="hidden fade-in">
@@ -176,7 +184,7 @@
 
             <button onclick="Vault.saveJournal()" class="w-full bg-sage-500 text-white font-bold py-3 rounded-xl shadow-lg mb-3">Save to Vault</button>
             
-            <button onclick="App.navigateTo('rewrite')" class="w-full border border-sage-300 text-sage-700 py-3 rounded-xl mb-3 flex justify-center items-center gap-2">
+            <button onclick="App.navigateTo('screen-rewrite')" class="w-full border border-sage-300 text-sage-700 py-3 rounded-xl mb-3 flex justify-center items-center gap-2">
                 <i class="fas fa-pen-fancy"></i> Need to send a text? Use Rewrite
             </button>
         </div>
@@ -197,13 +205,13 @@
                 <button onclick="UI.copyToClipboard('rewrite-result')" class="text-xs text-gray-400 underline w-full text-center">Copy to Clipboard</button>
             </div>
             
-            <button onclick="App.navigateTo('home')" class="w-full text-center text-gray-400 text-sm mt-6">Back Home</button>
+            <button onclick="App.navigateTo('screen-home')" class="w-full text-center text-gray-400 text-sm mt-6">Back Home</button>
         </div>
 
         <div id="screen-vault" class="hidden fade-in">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold text-sage-700">The Vault</h2>
-                <button onclick="App.navigateTo('home')" class="text-sm text-gray-400">Back</button>
+                <button onclick="App.navigateTo('screen-home')" class="text-sm text-gray-400">Back</button>
             </div>
             
             <div class="relative mb-4">
@@ -226,7 +234,13 @@
                     <button onclick="Vault.clear()" class="text-red-500 font-bold text-xs">Clear</button>
                 </div>
             </div>
-            <button onclick="App.navigateTo('home')" class="w-full text-center text-gray-400 text-sm mt-6">Back</button>
+            
+            <div class="mt-8 text-center border-t pt-6">
+                 <p class="text-xs text-gray-400 mb-2">Version 9.2</p>
+                 <a href="https://angel-s-site-4148.thinkific.com/courses/understanding-relationship-patterns" target="_blank" class="text-sage-600 font-bold text-sm">Visit Course Page</a>
+            </div>
+            
+            <button onclick="App.navigateTo('screen-home')" class="w-full text-center text-gray-400 text-sm mt-6">Back</button>
         </div>
 
     </main>
@@ -236,13 +250,13 @@
     <div id="paywallModal" class="fixed inset-0 bg-black bg-opacity-60 z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full p-6 text-center">
             <h2 class="text-2xl font-bold text-gray-800 mb-2">Unlock the Vault</h2>
-            <p class="text-gray-600 mb-6 text-sm">Save your entries, see trends, and access the full library.</p>
+            <p class="text-gray-600 mb-6 text-sm">Save your entries and access journaling. Included for course students.</p>
             <a href="https://buy.stripe.com/4gM5kDfQX6uj2Ghb829fW00" target="_blank" class="block w-full bg-sage-500 text-white font-bold py-3 rounded-lg mb-4 hover:bg-sage-600">Subscribe for $5/mo</a>
             <div class="flex gap-2">
-                <input type="text" id="accessCode" placeholder="CODE" class="flex-grow border border-gray-300 rounded p-2 text-sm uppercase">
-                <button onclick="App.checkCode()" class="bg-gray-800 text-white px-4 rounded text-sm">Unlock</button>
+                <input type="text" id="accessCode" placeholder="STUDENT CODE" class="flex-grow border border-gray-300 rounded p-2 text-sm uppercase">
+                <button onclick="checkCode()" class="bg-gray-800 text-white px-4 rounded text-sm">Unlock</button>
             </div>
-            <button onclick="UI.closePaywall()" class="mt-4 text-xs text-gray-400 underline">Close</button>
+            <button onclick="closePaywall()" class="mt-4 text-xs text-gray-400 underline">Close</button>
         </div>
     </div>
 
@@ -273,13 +287,17 @@
                 interrupt: ["Stop talking. Take a breath.", "Tongue to roof of mouth."], 
                 practice: "The Pause: Count to 5 before responding.", anchor: "I do not need to explain my existence.", prompt: "Where am I shrinking myself?" },
             'distrust': { name: "Hyper-Vigilance", subtype: "Scan Mode", 
-                what: "You are waiting for the other shoe to drop.", why: "Chaos feels familiar; stability feels suspicious.", 
-                interrupt: ["Look for safety cues.", "Fact-check: Real vs Imagined?"], 
+                what: "You are waiting for the other shoe to drop.", why: "Chaos feels familiar; stability feels suspicious. Your nervous system is wired to scan for danger.", 
+                interrupt: ["Look around the room. Find safety cues.", "Fact-check: Real vs Imagined?"], 
                 practice: "Write facts vs story.", anchor: "I can trust myself to handle whatever happens.", prompt: "What story am I inventing?" },
             'self_blame': { name: "Internalized Blame", subtype: "Shame Mode", 
                 what: "You are taking 100% responsibility.", why: "It felt safer to believe 'I am bad' than 'They are unsafe'.", 
                 interrupt: ["Say: 'This is not all my fault.'", "Push feet into floor."], 
-                practice: "Compassion: Talk to yourself like a friend.", anchor: "I am not the problem.", prompt: "What responsibility is not mine?" }
+                practice: "Compassion: Talk to yourself like a friend.", anchor: "I am not the problem.", prompt: "What responsibility is not mine?" },
+            'over_giving': { name: "Over Giving", subtype: "Fawn Mode", 
+                what: "You are over-giving to secure your place.", why: "You learned love was conditional on being useful.", 
+                interrupt: ["Clench fists then release.", "Ask: Do I really want to do this?"], 
+                practice: "Say No to one small thing.", anchor: "I am loved for who I am, not what I do.", prompt: "What am I trying to buy with my generosity?" }
         };
 
         const Decoder = {
@@ -296,7 +314,7 @@
                     State.currentResult = { ...data, date: new Date(), intensity: State.inputs.intensity };
                     Decoder.populateReport();
                     UI.setLoading(false);
-                    App.navigateTo('decode');
+                    App.navigateTo('screen-decode');
                 }, 800);
             },
             populateReport: function() {
@@ -307,13 +325,11 @@
                 UI.setText('out-what', r.what);
                 UI.setText('out-why', r.why);
                 
-                // Randomize tools
                 UI.setText('out-interrupt', r.interrupt[Math.floor(Math.random() * r.interrupt.length)]);
                 UI.setText('out-practice', r.practice);
                 UI.setText('out-anchor', `"${r.anchor}"`);
                 UI.setText('out-prompt', r.prompt);
                 
-                // Prefill journal
                 const prefill = State.inputs.vent ? `[Initial Vent]: ${State.inputs.vent}\n\n` : "";
                 document.getElementById('journal-input').value = prefill;
             },
@@ -325,15 +341,13 @@
             }
         };
 
-        // --- 3. REWRITE ENGINE (Rule-Based) ---
+        // --- 3. REWRITE ENGINE ---
         const Rewrite = {
             generate: function() {
                 const input = document.getElementById('rewrite-input').value.toLowerCase();
                 if(!input) return alert("Please enter text.");
                 
-                let output = "I'm feeling a bit overwhelmed and need to pause. Let's connect later."; // Default
-                
-                // Simple Rules
+                let output = "I'm feeling a bit overwhelmed and need to pause. Let's connect later.";
                 if(input.includes("ignore") || input.includes("answer")) {
                     output = "I'm noticing I'm feeling anxious about the silence. I'd love to check in when you have a moment.";
                 } else if(input.includes("why") || input.includes("never")) {
@@ -407,14 +421,10 @@
                 const e = Vault.data[index];
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF();
-                doc.setFontSize(20);
-                doc.text("LunaSoul Entry", 10, 20);
-                doc.setFontSize(12);
-                doc.text(`Date: ${new Date(e.date).toLocaleString()}`, 10, 30);
+                doc.setFontSize(20); doc.text("LunaSoul Entry", 10, 20);
+                doc.setFontSize(12); doc.text(`Date: ${new Date(e.date).toLocaleString()}`, 10, 30);
                 doc.text(`Pattern: ${e.title}`, 10, 40);
-                doc.text(`Intensity: ${e.intensity}/10`, 10, 50);
-                const splitText = doc.splitTextToSize(e.body, 180);
-                doc.text(splitText, 10, 60);
+                doc.text(doc.splitTextToSize(e.body, 180), 10, 60);
                 doc.save("lunasoul-entry.pdf");
                 UI.toast("PDF Downloaded");
             }
@@ -437,8 +447,7 @@
             updateSlider: (el) => {
                 document.getElementById('intensity-val').innerText = el.value;
                 const colors = ['#4ade80', '#fbbf24', '#f87171'];
-                const c = el.value < 4 ? colors[0] : el.value < 8 ? colors[1] : colors[2];
-                el.style.accentColor = c; 
+                el.style.accentColor = el.value < 4 ? colors[0] : el.value < 8 ? colors[1] : colors[2];
             },
             showPaywall: () => document.getElementById('paywallModal').classList.remove('hidden'),
             closePaywall: () => document.getElementById('paywallModal').classList.add('hidden'),
@@ -451,7 +460,7 @@
 
         const App = {
             navigateTo: function(screenId) {
-                // Update Progress Bar
+                // Progress Bar
                 const progressMap = { 'screen-home': '0%', 'screen-checkin': '33%', 'screen-decode': '66%', 'screen-regulate': '100%', 'screen-integrate': '100%' };
                 const fill = document.getElementById('progress-fill');
                 const bar = document.getElementById('progress-container');
@@ -473,14 +482,14 @@
             startCheckIn: () => App.navigateTo('screen-checkin'),
             checkCode: () => {
                 if (document.getElementById('accessCode').value.toUpperCase() === 'LUNA2025') {
-                    State.isPremium = true; localStorage.setItem('lunaPremium', 'true');
+                    State.premium = true; localStorage.setItem('lunaPremium', 'true');
                     alert("Unlocked!"); UI.closePaywall(); document.getElementById('upgradeBtn').classList.add('hidden');
                 } else { alert("Incorrect Code"); }
             }
         };
 
         // INIT
-        if(State.isPremium) document.getElementById('upgradeBtn').classList.add('hidden');
+        if(State.premium) document.getElementById('upgradeBtn').classList.add('hidden');
         App.navigateTo('screen-home');
 
     </script>
