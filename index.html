@@ -4,30 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <!-- FORCE REFRESH -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
     <title>Pattern Breaker | LunaSoul</title>
     
-    <!-- APP ICON -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍃</text></svg>">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#8A9A5B">
 
-    <!-- LIBRARIES -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-    <!-- CONFIG -->
+    
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: { extend: { colors: { sage: { 50: '#f4f7f4', 100: '#E8EDE6', 500: '#8A9A5B', 600: '#738249', 700: '#5F6F46', 900: '#2f3823' }, sand: '#F5F5F0' } } }
-        }
+        window.onerror = function(msg, url, line) { alert("System Error: " + msg); return false; };
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { sage: { 50: '#f4f7f4', 100: '#E8EDE6', 500: '#8A9A5B', 600: '#738249', 700: '#5F6F46', 900: '#2f3823' }, sand: '#F5F5F0' } } } }
     </script>
 
     <style>
@@ -35,10 +36,8 @@
         .hidden { display: none !important; }
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
         #toast { visibility: hidden; min-width: 250px; transform: translateX(-50%); background-color: #2f3823; color: #fff; text-align: center; border-radius: 50px; padding: 12px 24px; position: fixed; z-index: 100; left: 50%; bottom: 30px; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); opacity: 0; transition: opacity 0.3s, bottom 0.3s; }
         #toast.show { visibility: visible; opacity: 1; bottom: 50px; }
-        
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%; background: #fff; border: 2px solid currentColor; cursor: pointer; margin-top: -10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .mic-active { color: #ef4444 !important; animation: pulse 1s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
@@ -46,14 +45,13 @@
 </head>
 <body class="text-gray-800 min-h-screen flex flex-col mx-auto max-w-md bg-sand transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100">
 
-    <!-- HEADER -->
     <nav class="w-full bg-sage-500 text-white p-4 shadow-md flex justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('screen-home')">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="App.navigateTo('screen-home')">
             <h1 class="font-semibold text-lg tracking-wide">Pattern Breaker</h1>
         </div>
         <div class="flex gap-3 items-center">
-             <button onclick="toggleLang()" class="text-xs font-bold border border-white px-2 py-1 rounded hover:bg-white hover:text-sage-500 transition">🌐 <span id="lang-display">EN</span></button>
-             <button onclick="navigateTo('screen-settings')" class="hover:text-sage-200"><i class="fas fa-cog"></i></button>
+             <button onclick="App.toggleLang()" class="text-xs font-bold border border-white px-2 py-1 rounded hover:bg-white hover:text-sage-500 transition">🌐 <span id="lang-display">EN</span></button>
+             <button onclick="App.navigateTo('screen-settings')" class="hover:text-sage-200"><i class="fas fa-cog"></i></button>
         </div>
     </nav>
 
@@ -61,61 +59,47 @@
 
     <main id="app-container" class="flex-grow p-4 pb-24 relative overflow-y-auto">
 
-        <!-- 1. HOME -->
         <div id="screen-home" class="fade-in">
             <div class="text-center mt-8 mb-8">
                 <div class="w-24 h-24 bg-sage-100 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl shadow-inner text-sage-600">🍃</div>
                 <h2 class="text-3xl font-bold text-sage-700 dark:text-sage-300" data-i18n="welcome_title">Welcome Home.</h2>
                 <p class="text-gray-600 dark:text-gray-400 mt-4 text-sm leading-relaxed px-4" data-i18n="welcome_text">Decode your abandonment patterns, interrupt the spiral, and return to safety.</p>
             </div>
-            
-            <button onclick="navigateTo('screen-safety')" class="w-full bg-sage-500 hover:bg-sage-600 text-white font-bold py-4 rounded-xl shadow-lg transition transform hover:scale-105 mb-4" data-i18n="btn_start">Start Check-In (Free)</button>
-
-            <button onclick="startPremiumJournal()" class="w-full bg-white border-2 border-sage-500 text-sage-700 font-bold py-4 rounded-xl shadow-sm transition mb-4 flex justify-center items-center gap-2 dark:bg-gray-800 dark:border-sage-400 dark:text-sage-300">
+            <button onclick="App.navigateTo('screen-safety')" class="w-full bg-sage-500 hover:bg-sage-600 text-white font-bold py-4 rounded-xl shadow-lg transition transform hover:scale-105 mb-4" data-i18n="btn_start">Start Check-In (Free)</button>
+            <button onclick="App.startPremiumJournal()" class="w-full bg-white border-2 border-sage-500 text-sage-700 font-bold py-4 rounded-xl shadow-sm transition mb-4 flex justify-center items-center gap-2 dark:bg-gray-800 dark:border-sage-400 dark:text-sage-300">
                 <i class="fas fa-pen-nib"></i> <span data-i18n="btn_journal">Guided Journaling</span> <span id="lock-icon" class="text-xs ml-1">🔒</span>
             </button>
-
             <div class="grid grid-cols-2 gap-3 mt-4">
-                <button onclick="navigateTo('screen-vault')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300"><i class="fas fa-book mr-2"></i><span data-i18n="btn_vault">Vault</span></button>
-                <button onclick="toggleModal('modal-about')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300"><i class="fas fa-info-circle mr-2"></i><span data-i18n="btn_about">About</span></button>
+                <button onclick="App.navigateTo('screen-vault')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300"><i class="fas fa-book mr-2"></i><span data-i18n="btn_vault">Vault</span></button>
+                <button onclick="UI.toggleModal('modal-about')" class="bg-white p-3 rounded-lg shadow text-sm font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300"><i class="fas fa-info-circle mr-2"></i><span data-i18n="btn_about">About</span></button>
             </div>
-            
             <div class="mt-6 text-center">
                 <a href="https://angel-s-site-4148.thinkific.com/courses/understanding-relationship-patterns" target="_blank" class="text-xs text-sage-600 font-bold underline dark:text-sage-400" data-i18n="link_course">Take the Full Course</a>
             </div>
-            <p class="text-center text-xs text-gray-300 mt-8">v30.0</p>
+            <p class="text-center text-xs text-gray-300 mt-8">v32.0</p>
         </div>
 
-        <!-- 2. SAFETY -->
         <div id="screen-safety" class="hidden fade-in pt-6">
             <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-sage-500 dark:bg-gray-800">
                 <h2 class="text-xl font-bold text-gray-800 mb-4 dark:text-white"><i class="fas fa-heart text-sage-500 mr-2"></i><span data-i18n="safety_title">Emotional Safety</span></h2>
-                <p class="text-sm text-gray-600 leading-relaxed mb-4 dark:text-gray-300" data-i18n="safety_text">This is a self-guided tool. It is not a substitute for therapy.</p>
-                <div class="bg-sage-50 p-3 rounded-lg mb-6 dark:bg-gray-700">
-                    <h3 class="text-xs font-bold text-sage-700 uppercase mb-1 dark:text-sage-300"><i class="fas fa-lock mr-1"></i> <span data-i18n="privacy_title">Privacy Notice</span></h3>
-                    <p class="text-xs text-gray-600 dark:text-gray-400" data-i18n="privacy_text">Your journal entries are stored <strong>only on this device</strong>. We do not see your data.</p>
-                </div>
-                <button onclick="grantConsent()" class="w-full bg-sage-500 hover:bg-sage-600 text-white font-bold py-3 rounded-lg" data-i18n="btn_agree">I Understand & Proceed</button>
-                <button onclick="navigateTo('screen-home')" class="w-full text-center text-sage-600 font-bold mt-4 dark:text-sage-400" data-i18n="btn_back">Back</button>
+                <p class="text-sm text-gray-600 leading-relaxed mb-4 dark:text-gray-300" data-i18n="safety_text">This is a self-guided tool. It is not a substitute for therapy. If you feel unsafe, please contact a professional.</p>
+                <button onclick="App.grantConsent()" class="w-full bg-sage-500 hover:bg-sage-600 text-white font-bold py-3 rounded-lg" data-i18n="btn_agree">I Understand & Proceed</button>
+                <button onclick="App.navigateTo('screen-home')" class="w-full text-center text-sage-600 font-bold mt-4 dark:text-sage-400" data-i18n="btn_back">Back</button>
             </div>
         </div>
 
-        <!-- 3. CHECK-IN -->
         <div id="screen-intake" class="hidden fade-in">
             <h2 class="text-xl font-bold text-sage-700 mb-6 dark:text-sage-300" data-i18n="checkin_title">Check-In</h2>
-            
             <div class="mb-6 relative">
                 <label class="block text-xs font-bold text-gray-400 uppercase mb-2" data-i18n="label_vent">What's happening? (Vent here)</label>
-                <textarea id="in-vent" rows="3" class="w-full p-4 bg-white border border-sage-200 rounded-xl text-base outline-none shadow-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white" placeholder="I'm spiraling because..."></textarea>
-                <button onclick="startVoice('in-vent')" class="absolute bottom-3 right-3 text-gray-400 hover:text-sage-500"><i class="fas fa-microphone"></i></button>
+                <textarea id="in-vent" rows="3" class="w-full p-4 bg-white border border-sage-200 rounded-xl text-base outline-none shadow-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"></textarea>
+                <button onclick="App.startVoice('in-vent')" class="absolute bottom-3 right-3 text-gray-400 hover:text-sage-500"><i class="fas fa-microphone"></i></button>
             </div>
-
             <div class="mb-8">
                 <label class="block text-xs font-bold text-gray-400 uppercase mb-2" data-i18n="label_intensity">Intensity (1-10)</label>
                 <input type="range" id="in-intensity" min="1" max="10" value="5" class="w-full" oninput="document.getElementById('intensity-val').innerText = this.value">
                 <p class="text-center font-bold text-sage-600 mt-2 dark:text-sage-400"><span data-i18n="level">Level</span>: <span id="intensity-val">5</span></p>
             </div>
-
             <div class="mb-6">
                 <label class="block text-xs font-bold text-gray-400 uppercase mb-2" data-i18n="label_reaction">First Reaction?</label>
                 <select id="in-behavior" class="w-full p-4 bg-white border border-sage-200 rounded-xl text-sm outline-none shadow-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white">
@@ -128,174 +112,113 @@
                     <option value="self_blame" data-i18n="opt_blame">Self-blame (Shame)</option>
                 </select>
             </div>
-
-            <button onclick="runDecoder()" class="w-full bg-sage-500 hover:bg-sage-600 text-white font-bold py-4 rounded-xl shadow-lg mt-4 flex justify-center items-center gap-2">
+            <button onclick="App.runDecoder()" class="w-full bg-sage-500 hover:bg-sage-600 text-white font-bold py-4 rounded-xl shadow-lg mt-4 flex justify-center items-center gap-2">
                 <span id="decode-btn-text" data-i18n="btn_decode">Decode My Pattern</span>
                 <i id="decode-spinner" class="fas fa-spinner fa-spin hidden"></i>
             </button>
-            <button onclick="navigateTo('screen-home')" class="w-full text-center text-sage-600 font-bold mt-4 dark:text-sage-400" data-i18n="btn_cancel">Cancel</button>
+            <button onclick="App.navigateTo('screen-home')" class="w-full text-center text-sage-600 font-bold mt-4 dark:text-sage-400" data-i18n="btn_cancel">Cancel</button>
         </div>
 
-        <!-- 4. RESULT -->
         <div id="screen-result" class="hidden fade-in pb-10">
             <div class="bg-sage-100 p-6 rounded-xl mb-6 border-l-4 border-sage-500 shadow-sm dark:bg-gray-800 dark:border-sage-400">
-                <p class="text-xs uppercase tracking-widest text-gray-500 mb-1 dark:text-gray-400" data-i18n="label_detected">Detected Pattern</p>
+                <p class="text-xs uppercase tracking-widest text-gray-500 mb-1 dark:text-gray-400" data-i18n="label_detected">Core Wound Detected</p>
                 <h2 id="out-pattern" class="text-2xl font-bold text-sage-800 mb-2 dark:text-white">...</h2>
                 <div class="flex items-center gap-2">
                     <span id="out-badge" class="bg-sage-200 text-sage-800 text-xs px-2 py-1 rounded font-bold">Intensity: 5</span>
                 </div>
             </div>
-
             <div class="bg-white p-5 rounded-xl shadow-sm mb-6 dark:bg-gray-800">
-                <h3 class="font-bold text-gray-800 text-sm mb-2 border-b pb-2 dark:text-gray-200" data-i18n="label_what">What's Happening</h3>
+                <h3 class="font-bold text-gray-800 text-sm mb-2 border-b pb-2 dark:text-gray-200" data-i18n="label_what">The Somatic Reality</h3>
                 <p id="out-what" class="text-sm text-gray-600 leading-relaxed mb-4 dark:text-gray-300">...</p>
-                <h3 class="font-bold text-gray-800 text-sm mb-2 border-b pb-2 dark:text-gray-200" data-i18n="label_why">Why It Activates</h3>
+                <h3 class="font-bold text-gray-800 text-sm mb-2 border-b pb-2 dark:text-gray-200" data-i18n="label_why">Origin Story</h3>
                 <p id="out-why" class="text-sm text-gray-600 leading-relaxed dark:text-gray-300">...</p>
             </div>
-
             <div class="grid grid-cols-1 gap-3 mb-6">
-                <button onclick="showModule('interrupt')" class="p-4 bg-sage-500 text-white rounded-xl shadow font-bold text-left flex justify-between"><span data-i18n="btn_interrupt">Pattern Interrupter</span><i class="fas fa-bolt"></i></button>
-                <button onclick="showModule('practice')" class="p-4 bg-white border border-sage-200 rounded-xl shadow text-left flex justify-between dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"><span data-i18n="btn_practice">Daily Practice</span><i class="fas fa-leaf text-sage-500"></i></button>
-                <button onclick="showModule('anchor')" class="p-4 bg-white border border-sage-200 rounded-xl shadow text-left flex justify-between dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"><span data-i18n="btn_anchor">Anchor for Today</span><i class="fas fa-anchor text-sage-500"></i></button>
-                <button onclick="showModule('journal')" class="p-4 bg-white border border-sage-200 rounded-xl shadow text-left flex justify-between dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"><span data-i18n="btn_journal_prompt">Journal Prompt</span><i class="fas fa-pen text-sage-500"></i></button>
+                <button onclick="App.showModule('interrupt')" class="p-4 bg-sage-500 text-white rounded-xl shadow font-bold text-left flex justify-between"><span data-i18n="btn_interrupt">Somatic Interrupter</span><i class="fas fa-bolt"></i></button>
+                <button onclick="App.showModule('practice')" class="p-4 bg-white border border-sage-200 rounded-xl shadow text-left flex justify-between dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"><span data-i18n="btn_practice">Micro-Practice</span><i class="fas fa-leaf text-sage-500"></i></button>
+                <button onclick="App.showModule('anchor')" class="p-4 bg-white border border-sage-200 rounded-xl shadow text-left flex justify-between dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"><span data-i18n="btn_anchor">Truth Anchor</span><i class="fas fa-anchor text-sage-500"></i></button>
+                <button onclick="App.showModule('journal')" class="p-4 bg-white border border-sage-200 rounded-xl shadow text-left flex justify-between dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"><span data-i18n="btn_journal_prompt">Deep Inquiry</span><i class="fas fa-pen text-sage-500"></i></button>
             </div>
-
-            <div class="bg-white border-2 border-sage-100 p-4 rounded-xl mb-4 text-center dark:bg-gray-800 dark:border-gray-600">
-                <h3 class="font-bold text-sage-700 mb-2 dark:text-sage-300">Ready to heal the root?</h3>
-                <p class="text-xs text-gray-500 mb-3 dark:text-gray-400">The app manages the symptom. The course heals the wound.</p>
-                <a href="https://angel-s-site-4148.thinkific.com/courses/understanding-relationship-patterns" target="_blank" class="block bg-sage-100 text-sage-700 py-2 rounded-lg font-bold text-sm hover:bg-sage-200">View Course</a>
-            </div>
-
-            <button onclick="saveFreeEntry()" class="w-full text-center text-sage-600 text-sm font-bold mb-4 dark:text-sage-400" data-i18n="btn_save_result">Save Result to Vault</button>
-            <button onclick="resetFlow()" class="w-full text-center text-gray-400 text-sm" data-i18n="btn_next_decode">Start Next Decode</button>
+            <button onclick="App.saveFreeEntry()" class="w-full text-center text-sage-600 text-sm font-bold mb-4 dark:text-sage-400" data-i18n="btn_save_result">Save Result</button>
+            <button onclick="App.reset()" class="w-full text-center text-gray-400 text-sm" data-i18n="btn_next_decode">Start Next Decode</button>
         </div>
 
-        <!-- 5. MODULE -->
         <div id="screen-module" class="hidden fade-in pt-6">
             <h2 id="mod-title" class="text-xl font-bold text-sage-700 mb-4 dark:text-sage-300">Module</h2>
             <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-sage-500 mb-6 dark:bg-gray-800">
                 <p id="mod-content" class="text-lg font-medium text-gray-800 leading-relaxed dark:text-gray-200">...</p>
             </div>
-            
             <div id="journal-area" class="hidden mb-4">
                 <textarea id="journal-input-module" rows="10" class="w-full p-4 bg-white border border-sage-200 rounded-lg text-base focus:ring-2 focus:ring-sage-500 outline-none shadow-inner dark:bg-gray-800 dark:border-gray-600 dark:text-white"></textarea>
             </div>
-
-            <button onclick="saveModuleEntry()" class="w-full bg-sage-500 text-white font-bold py-3 rounded-xl shadow-lg mb-3" data-i18n="btn_save_vault">Save to Vault</button>
-            <button onclick="navigateTo('screen-result')" class="w-full text-sage-600 font-bold text-center dark:text-sage-400" data-i18n="btn_back">Back</button>
+            <button onclick="App.saveModuleEntry()" class="w-full bg-sage-500 text-white font-bold py-3 rounded-xl shadow-lg mb-3" data-i18n="btn_save_vault">Save to Vault</button>
+            <button onclick="App.navigateTo('screen-result')" class="w-full text-sage-600 font-bold text-center dark:text-sage-400" data-i18n="btn_back">Back</button>
         </div>
 
-        <!-- 6. PREMIUM JOURNAL -->
         <div id="screen-premium-journal" class="hidden fade-in">
             <h2 class="text-xl font-bold text-sage-700 mb-4 dark:text-sage-300" data-i18n="btn_journal">Guided Journaling</h2>
-            <div class="mb-4">
-                <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Select a Prompt</label>
-                <select id="prem-prompt" class="w-full p-3 bg-white border border-sage-200 rounded-xl text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white">
-                    <option>What emotion felt biggest today?</option>
-                    <option>Where did you downplay your needs?</option>
-                    <option>What pattern repeated itself today?</option>
-                    <option>What is the story I am telling myself?</option>
-                </select>
-            </div>
-            <div class="relative">
-                <textarea id="prem-text" rows="10" class="w-full p-4 bg-white border border-sage-200 rounded-xl text-base focus:ring-2 focus:ring-sage-500 outline-none mb-4 dark:bg-gray-800 dark:border-gray-600 dark:text-white"></textarea>
-                <button onclick="startVoice('prem-text')" class="absolute bottom-6 right-3 text-gray-400 hover:text-sage-500"><i class="fas fa-microphone"></i></button>
-            </div>
-            <button onclick="savePremiumEntry()" class="w-full bg-sage-500 text-white font-bold py-3 rounded-xl shadow-lg" data-i18n="btn_analyze">Analyze & Save</button>
-            <button onclick="navigateTo('screen-home')" class="w-full text-center text-sage-600 font-bold mt-4 dark:text-sage-400" data-i18n="btn_cancel">Cancel</button>
+            <textarea id="prem-text" rows="10" class="w-full p-4 bg-white border border-sage-200 rounded-xl text-base focus:ring-2 focus:ring-sage-500 outline-none mb-4 dark:bg-gray-800 dark:border-gray-600 dark:text-white"></textarea>
+            <button onclick="App.startVoice('prem-text')" class="block mb-4 text-gray-400 hover:text-sage-500"><i class="fas fa-microphone"></i></button>
+            <button onclick="App.savePremiumEntry()" class="w-full bg-sage-500 text-white font-bold py-3 rounded-xl shadow-lg" data-i18n="btn_analyze">Analyze & Save</button>
+            <button onclick="App.navigateTo('screen-home')" class="w-full text-center text-sage-600 font-bold mt-4 dark:text-sage-400" data-i18n="btn_cancel">Cancel</button>
         </div>
 
-        <!-- 7. VAULT -->
         <div id="screen-vault" class="hidden fade-in">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-sage-700 dark:text-sage-300" data-i18n="btn_vault">The Vault</h2>
-                <button onclick="navigateTo('screen-home')" class="text-sm text-sage-600 font-bold dark:text-sage-400" data-i18n="btn_back">Back</button>
+                <button onclick="App.navigateTo('screen-home')" class="text-sm text-sage-600 font-bold dark:text-sage-400" data-i18n="btn_back">Back</button>
             </div>
-            <!-- TABS -->
             <div class="flex mb-4 bg-white rounded-lg p-1 shadow-sm dark:bg-gray-800">
-                <button onclick="switchTab('free')" id="tab-free" class="flex-1 py-2 text-xs font-bold rounded bg-sage-100 text-sage-700">Check-Ins</button>
-                <button onclick="switchTab('premium')" id="tab-premium" class="flex-1 py-2 text-xs font-bold rounded text-gray-400">Journal</button>
-                <button onclick="switchTab('reports')" id="tab-reports" class="flex-1 py-2 text-xs font-bold rounded text-gray-400">Reports</button>
+                <button onclick="App.switchTab('free')" id="tab-free" class="flex-1 py-2 text-xs font-bold rounded bg-sage-100 text-sage-700">Check-Ins</button>
+                <button onclick="App.switchTab('premium')" id="tab-premium" class="flex-1 py-2 text-xs font-bold rounded text-gray-400">Journal</button>
             </div>
-            
             <div id="vault-content" class="space-y-3 pb-20"></div>
-            
-            <!-- REPORTS BUTTON -->
-            <div id="report-actions" class="hidden mt-4">
-                <button onclick="generateWeekly()" class="w-full bg-sage-600 text-white font-bold py-3 rounded-xl shadow-lg mb-2">Generate Weekly Report</button>
-                <p class="text-xs text-center text-gray-400">Analyzes last 7 days of Premium entries.</p>
-            </div>
         </div>
 
-        <!-- 8. SETTINGS -->
         <div id="screen-settings" class="hidden fade-in">
             <h2 class="text-xl font-bold text-sage-700 mb-6 dark:text-sage-300" data-i18n="settings_title">Settings</h2>
             <div class="bg-white rounded-xl shadow divide-y divide-gray-100 dark:bg-gray-800 dark:divide-gray-700">
                 <div class="p-4 flex justify-between items-center">
                     <span class="text-gray-700 dark:text-gray-200" data-i18n="dark_mode">Dark Mode</span>
-                    <button onclick="toggleDark()" class="text-sage-500 font-bold text-xs bg-gray-100 dark:bg-gray-900 px-3 py-1 rounded">Toggle</button>
+                    <button onclick="App.toggleDark()" class="text-sage-500 font-bold text-xs bg-gray-100 dark:bg-gray-900 px-3 py-1 rounded">Toggle</button>
                 </div>
                 <div class="p-4 flex justify-between items-center">
                     <span class="text-red-400" data-i18n="clear_data">Clear Data</span>
-                    <button onclick="clearVault()" class="text-red-500 font-bold text-xs bg-red-50 px-3 py-1 rounded">Clear</button>
+                    <button onclick="App.clearVault()" class="text-red-500 font-bold text-xs bg-red-50 px-3 py-1 rounded">Clear</button>
                 </div>
             </div>
-            <button onclick="navigateTo('screen-home')" class="w-full text-center text-sage-600 font-bold mt-6 dark:text-sage-400" data-i18n="btn_back">Back</button>
+            <button onclick="App.navigateTo('screen-home')" class="w-full text-center text-sage-600 font-bold mt-6 dark:text-sage-400" data-i18n="btn_back">Back</button>
         </div>
 
-        <!-- MODALS -->
         <div id="modal-about" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
             <div class="bg-white rounded-xl p-6 max-w-sm w-full relative dark:bg-gray-800">
                 <h2 class="text-xl font-bold text-sage-700 mb-4 dark:text-sage-300">About Pattern Breaker</h2>
                 <p class="text-sm text-gray-600 mb-4 dark:text-gray-300">This tool helps you identify emotional patterns connected to abandonment wounds and offers self-guided practices to interrupt them.</p>
-                <button onclick="toggleModal('modal-about')" class="w-full bg-sage-500 text-white py-2 rounded-lg font-bold">Close</button>
+                <button onclick="UI.toggleModal('modal-about')" class="w-full bg-sage-500 text-white py-2 rounded-lg font-bold">Close</button>
             </div>
         </div>
-
-        <div id="modal-report-view" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-            <div class="bg-white rounded-xl p-6 max-w-sm w-full max-h-[80vh] overflow-y-auto relative dark:bg-gray-800">
-                <h2 class="text-xl font-bold text-sage-700 mb-4 dark:text-white">Weekly Report</h2>
-                <div id="report-body" class="text-sm text-gray-700 space-y-3 dark:text-gray-300"></div>
-                <button onclick="toggleModal('modal-report-view')" class="w-full bg-sage-500 text-white py-2 rounded-lg font-bold mt-4">Close</button>
-            </div>
-        </div>
-
         <div id="paywallModal" class="fixed inset-0 bg-black bg-opacity-60 z-[70] hidden flex items-center justify-center p-4">
             <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full p-6 text-center dark:bg-gray-800">
                 <h2 class="text-2xl font-bold text-gray-800 mb-2 dark:text-white">Unlock Premium</h2>
                 <a href="https://buy.stripe.com/4gM5kDfQX6uj2Ghb829fW00" target="_blank" class="block w-full bg-sage-500 text-white font-bold py-3 rounded-lg mb-4 hover:bg-sage-600">Subscribe</a>
                 <div class="flex gap-2">
-                    <input type="text" id="accessCode" placeholder="STUDENT CODE" class="flex-grow border border-gray-300 rounded p-2 text-sm uppercase dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                    <button onclick="checkCode()" class="bg-gray-800 text-white px-4 rounded text-sm">Unlock</button>
+                    <input type="text" id="accessCode" placeholder="CODE" class="flex-grow border border-gray-300 rounded p-2 text-sm uppercase dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    <button onclick="App.checkCode()" class="bg-gray-800 text-white px-4 rounded text-sm">Unlock</button>
                 </div>
-                <button onclick="closePaywall()" class="mt-4 text-xs text-gray-400 underline">Close</button>
+                <button onclick="UI.closePaywall()" class="mt-4 text-xs text-gray-400 underline">Close</button>
             </div>
         </div>
-
         <div id="toast">Saved</div>
     </main>
 
     <script>
-        // GLOBAL STATE
-        let currentLang = 'en';
-        let isPremium = localStorage.getItem('lunaPremium') === 'true';
-        let consentGiven = localStorage.getItem('lunaConsent') === 'true';
-        let vault = JSON.parse(localStorage.getItem('lunaVault') || '{"free":[],"premium":[],"reports":[]}');
-        
-        let currentInputs = { vent: "", intensity: 5, behavior: "" };
-        let currentResult = null;
-        let activeModule = null;
-        let activeTab = 'free';
-
-        if (Array.isArray(vault)) { vault = { free: vault, premium: [], reports: [] }; localStorage.setItem('lunaVault', JSON.stringify(vault)); }
-
-        // TRANSLATIONS
+        // --- TRANSLATIONS (EN/ES) ---
         const LANG = {
             en: {
                 welcome_title: "Welcome Home.", welcome_text: "Decode your abandonment patterns.", btn_start: "Start Check-In (Free)", btn_journal: "Guided Journaling", btn_vault: "Vault", btn_about: "About", link_course: "Take the Full Course",
                 safety_title: "Emotional Safety", safety_text: "This is a self-guided tool, not therapy.", privacy_title: "Privacy Notice", privacy_text: "Data stored on device only.", btn_agree: "I Understand & Proceed", btn_back: "Back",
                 checkin_title: "Check-In", label_vent: "What's happening? (Vent here)", label_intensity: "Intensity (1-10)", level: "Level", label_reaction: "First Reaction?", btn_decode: "Decode My Pattern", btn_cancel: "Cancel",
-                label_detected: "Detected Pattern", label_what: "What's Happening", label_why: "Why It Activates", btn_interrupt: "Interrupter", btn_practice: "Daily Practice", btn_anchor: "Anchor", btn_journal_prompt: "Journal Prompt", btn_save_result: "Save Result", btn_next_decode: "Start Next Decode",
+                label_detected: "Core Wound Detected", label_what: "The Somatic Reality", label_why: "Origin Story", btn_interrupt: "Somatic Interrupter", btn_practice: "Micro-Practice", btn_anchor: "Truth Anchor", btn_journal_prompt: "Deep Inquiry", btn_save_result: "Save Result", btn_next_decode: "Start Next Decode",
                 btn_save_vault: "Save to Vault", btn_analyze: "Analyze & Save", btn_vault: "The Vault", settings_title: "Settings", dark_mode: "Dark Mode", clear_data: "Clear Data",
                 opt_indep: "Pulling away / Isolating", opt_cling: "Clinging / Panic texting", opt_shut: "Shutdown / Numb", opt_give: "Over-giving", opt_explain: "Over-explaining", opt_distrust: "Checking / Scanning", opt_blame: "Self-blame"
             },
@@ -303,218 +226,186 @@
                 welcome_title: "Bienvenido a Casa.", welcome_text: "Decodifica tus patrones de abandono.", btn_start: "Iniciar Chequeo (Gratis)", btn_journal: "Diario Guiado", btn_vault: "Bóveda", btn_about: "Acerca de", link_course: "Tomar el Curso Completo",
                 safety_title: "Seguridad Emocional", safety_text: "Herramienta de autoayuda, no terapia.", privacy_title: "Aviso de Privacidad", privacy_text: "Datos guardados solo en este dispositivo.", btn_agree: "Entiendo y Procedo", btn_back: "Atrás",
                 checkin_title: "Chequeo", label_vent: "¿Qué está pasando? (Desahógate aquí)", label_intensity: "Intensidad (1-10)", level: "Nivel", label_reaction: "¿Primera Reacción?", btn_decode: "Decodificar Patrón", btn_cancel: "Cancelar",
-                label_detected: "Patrón Detectado", label_what: "Lo que sucede", label_why: "Por qué se activa", btn_interrupt: "Interruptor", btn_practice: "Práctica Diaria", btn_anchor: "Ancla", btn_journal_prompt: "Pregunta de Diario", btn_save_result: "Guardar Resultado", btn_next_decode: "Comenzar Nuevo",
+                label_detected: "Herida Central Detectada", label_what: "La Realidad Somática", label_why: "Historia de Origen", btn_interrupt: "Interruptor Somático", btn_practice: "Micro-Práctica", btn_anchor: "Ancla de Verdad", btn_journal_prompt: "Indagación Profunda", btn_save_result: "Guardar Resultado", btn_next_decode: "Comenzar Nuevo",
                 btn_save_vault: "Guardar en Bóveda", btn_analyze: "Analizar y Guardar", btn_vault: "La Bóveda", settings_title: "Configuración", dark_mode: "Modo Oscuro", clear_data: "Borrar Datos",
                 opt_indep: "Alejarse / Aislarse", opt_cling: "Aferrarse / Pánico", opt_shut: "Apagado / Entumecido", opt_give: "Dar en exceso", opt_explain: "Explicar en exceso", opt_distrust: "Verificar / Escanear", opt_blame: "Culparse a sí mismo"
             }
         };
 
-        // DATABASE
+        // --- DEEP WISDOM DATABASE (The "Therapist Brain") ---
         const LOGIC_DB = {
             'hyper_independence': {
-                en: { name: "Hyper Independence", subtype: "Protection Mode", what: "You are pushing others away to maintain control. Your system registers 'needing' as 'unsafe'. You are fortifying your walls because vulnerability feels like a threat.", why: "This isn't about strength; it's a survival strategy. Early on, you likely learned that no one was coming to save you, so you decided to become your own savior. Your nervous system imprinted 'aloneness' as the only safety.", interrupt: "Drop your shoulders. Unclench your jaw. Say out loud: 'It is safe to let people in, just a little.'", practice: "The 5% Rule: Ask for help with one tiny thing today. It can be as simple as asking someone to pass the salt. Notice that you survived the request.", anchor: "I do not have to carry it all to be safe.", prompt: "What story am I telling myself about what will happen if I admit I need support right now?" },
-                es: { name: "Hiperindependencia", subtype: "Modo Protección", what: "Estás alejando a los demás para mantener el control...", why: "Aprendiste que nadie vendría a salvarte...", interrupt: "Baja los hombros.", practice: "Pide ayuda con algo pequeño.", anchor: "No tengo que cargar todo solo.", prompt: "¿Qué temo que pase si admito que necesito apoyo?" }
+                en: { name: "Protection Mode (Hyper-Independence)", what: "You aren't just 'pulling away'—your nervous system has engaged a Protection Response. Vulnerability has been registered as a threat to your survival. You are creating distance not because you don't want connection, but because your body believes connection is unsafe.", why: "This is a survival strategy, not a personality flaw. You likely learned early on that you were the only one coming to save you. Your system imprinted 'aloneness' as the only reliable form of safety. To your inner child, needing others feels like walking into a trap.", interrupt: "Drop your shoulders significantly. Unclench your jaw. Exhale longer than you inhale. Say out loud: 'I am safe in this chair. I am safe in this room.'", practice: "The 5% Rule: Ask for help with one tiny, low-stakes thing today (e.g., 'Can you pass the salt?'). Prove to your nervous system that you can express a need and survive it.", anchor: "I do not have to carry it all to be worthy of love.", prompt: "What is the catastrophic story my mind is telling me about what will happen if I admit I need support right now?" },
+                es: { name: "Modo Protección (Hiperindependencia)", what: "No solo te estás 'alejando': tu sistema nervioso ha activado una Respuesta de Protección. La vulnerabilidad ha sido registrada como una amenaza para tu supervivencia. Creas distancia no porque no quieras conexión, sino porque tu cuerpo cree que la conexión es insegura.", why: "Esta es una estrategia de supervivencia, no un defecto de personalidad. Probablemente aprendiste temprano que eras el único que vendría a salvarte. Tu sistema imprimió la 'soledad' como la única forma confiable de seguridad. Para tu niño interior, necesitar a otros se siente como caer en una trampa.", interrupt: "Baja los hombros significativamente. Desaprieta la mandíbula. Exhala más tiempo del que inhalas. Di en voz alta: 'Estoy seguro en esta silla'.", practice: "La Regla del 5%: Pide ayuda con una cosa pequeña hoy. Demuéstrale a tu sistema nervioso que puedes expresar una necesidad y sobrevivir.", anchor: "No tengo que cargar todo para ser digno de amor.", prompt: "¿Cuál es la historia catastrófica que mi mente me cuenta sobre lo que sucederá si admito que necesito apoyo?" }
             },
             'panic_clinging': {
-                en: { name: "Anxious Grasping", subtype: "Fight Mode Activation", what: "Your nervous system is screaming. You feel an urgent, frantic need to 'fix' the connection immediately. This is not love; this is a fight response to the threat of abandonment.", why: "This is an attachment wound being touched. Your child-self learned that 'distance' meant 'danger'. Your body is mobilizing energy to bridge the gap because it feels life-threatening.", interrupt: "Put the phone down. Walk into another room immediately. Push your hands hard against a wall for 10 seconds to discharge the adrenaline. Splash cold water on your face to reset your vagus nerve.", practice: "Self-Soothing: Place a hand on your chest and say 'I am here with you. I am not leaving you.' Repeat until your breathing slows.", anchor: "My safety is inside me, not in their response.", prompt: "What am I trying to earn from them right now that I can give to myself?" },
-                es: { name: "Aferramiento Ansioso", subtype: "Modo Lucha", what: "Tu sistema grita. Necesitas arreglarlo.", why: "Herida de apego tocada.", interrupt: "Baja el teléfono.", practice: "Mano en el pecho.", anchor: "La seguridad está en mí.", prompt: "¿Qué estoy tratando de ganar?" }
+                en: { name: "Fight Mode (Anxious Grasping)", what: "You selected 'Clinging', but somatically, you are in a Sympathetic Fight Response. Your nervous system is screaming. This frantic urgency isn't 'neediness'—it is biological terror. Your body is mobilizing massive energy to bridge the gap because, to your primal brain, distance equals death.", why: "This is a primal attachment wound being touched. You likely learned that love was inconsistent or conditional. When the connection feels threatened, your body hijacks your brain to force a reconnection. You are trying to earn safety through proximity.", interrupt: "Put the phone down and walk into another room. Push your hands firmly against a wall for 10 seconds to discharge the fight energy. Splash cold water on your face to reset your vagus nerve.", practice: "Self-Soothing: Place a hand on your chest. Say: 'I am here with you. I am not leaving you.' Repeat until you feel your breath deepen. You must become the consistent caregiver you are seeking.", anchor: "My safety is inside me, not in their text message.", prompt: "What am I trying to get from them right now that I am starving for inside myself?" },
+                es: { name: "Modo Lucha (Aferramiento Ansioso)", what: "Seleccionaste 'Aferrarse', pero somáticamente estás en una Respuesta de Lucha. Tu sistema nervioso está gritando. Esta urgencia frenética no es 'necesidad', es terror biológico. Tu cuerpo está movilizando energía masiva para cerrar la brecha porque, para tu cerebro primitivo, la distancia equivale a la muerte.", why: "Esta es una herida de apego primitiva. Probablemente aprendiste que el amor era inconsistente. Cuando la conexión se siente amenazada, tu cuerpo secuestra tu cerebro para forzar una reconexión.", interrupt: "Baja el teléfono y ve a otra habitación. Empuja tus manos firmemente contra una pared durante 10 segundos. Échate agua fría en la cara.", practice: "Autotranquilización: Pon una mano en tu pecho. Di: 'Estoy aquí contigo. No te dejaré'. Repite hasta que tu respiración se profundice.", anchor: "Mi seguridad está dentro de mí, no en su mensaje de texto.", prompt: "¿Qué estoy tratando de obtener de ellos ahora mismo por lo que estoy hambriento dentro de mí?" }
             },
             'shutdown': {
-                en: { name: "Emotional Shutdown", subtype: "Freeze Mode", what: "Going numb. Foggy.", why: "Learned disappearance.", interrupt: "Shake hands.", practice: "Name 3 colors.", anchor: "Safe in body.", prompt: "What feeling am I numbing?" },
-                es: { name: "Apagado Emocional", subtype: "Modo Congelación", what: "Te sientes entumecido.", why: "Aprendiste a desaparecer.", interrupt: "Sacude las manos.", practice: "Nombra 3 colores.", anchor: "Seguro en mi cuerpo.", prompt: "¿Qué emoción estoy adormeciendo?" }
-            },
-            'over_explaining': {
-                en: { name: "Over-Explaining", subtype: "Fawn Mode", what: "Over-talking to manage emotion.", why: "Needs were 'too much'.", interrupt: "Stop talking.", practice: "Count to 5.", anchor: "No need to explain.", prompt: "Where am I shrinking?" },
-                es: { name: "Explicación Excesiva", subtype: "Modo Complacencia", what: "Hablas demasiado para gestionar emociones.", why: "Tus necesidades eran 'demasiado'.", interrupt: "Deja de hablar.", practice: "Cuenta hasta 5.", anchor: "No necesito explicar mi existencia.", prompt: "¿Dónde me estoy encogiendo?" }
-            },
-            'over_giving': {
-                en: { name: "Over Giving", subtype: "Fawn Mode", what: "Pouring out energy.", why: "Love conditional on utility.", interrupt: "Clench fists.", practice: "Say No.", anchor: "Value not in provision.", prompt: "What am I trying to buy?" },
-                es: { "name": "Dar en Exceso", subtype: "Modo Complacencia", what: "Dando demasiada energía.", why: "Amor condicional.", interrupt: "Aprieta los puños.", practice: "Di No.", anchor: "Mi valor no está en lo que doy.", prompt: "¿Qué estoy tratando de comprar?" }
-            },
-            'distrust': {
-                en: { name: "Hyper-Vigilance", subtype: "Scan Mode", what: "Waiting for other shoe.", why: "Chaos familiar.", interrupt: "Look for safety.", practice: "Fact check.", anchor: "I can trust myself.", prompt: "What story am I inventing?" },
-                es: { name: "Hipervigilancia", subtype: "Modo Escaneo", what: "Esperando lo peor.", why: "El caos es familiar.", interrupt: "Busca seguridad.", practice: "Verifica hechos.", anchor: "Puedo confiar en mí.", prompt: "¿Qué historia estoy inventando?" }
-            },
-            'self_blame': {
-                en: { name: "Internalized Blame", subtype: "Shame Mode", what: "Taking 100% responsibility.", why: "Better bad than unsafe.", interrupt: "Push feet into floor.", practice: "Compassion.", anchor: "I am not problem.", prompt: "What responsibility isn't mine?" },
-                es: { name: "Culpa Internalizada", subtype: "Modo Vergüenza", what: "Tomas 100% responsabilidad.", why: "Mejor ser malo que inseguro.", interrupt: "Empuja los pies al suelo.", practice: "Compasión.", anchor: "No soy el problema.", prompt: "¿Qué responsabilidad no es mía?" }
+                en: { name: "Freeze Mode (Emotional Shutdown)", what: "You feel numb, foggy, or checked out. This is a Dorsal Vagal Shutdown. Your system has pulled the emergency brake because the emotional intensity became too high to process. You aren't 'cold'; you are overwhelmed.", why: "This is the ultimate survival strategy. When you couldn't fight or flee in the past, you learned to disappear inside yourself to survive. Your body believes that feeling nothing is safer than feeling this pain.", interrupt: "We need to mobilize slowly. Shake your hands vigorously. Hum a low tone (Voo sound) to stimulate the vagus nerve. Wrap yourself in a heavy blanket.", practice: "Orientation: Look around the room. Name 3 red objects. Name 3 things you can touch. Signal to your brain that you are in the present, not the past.", anchor: "It is safe to be in my body. I am right here.", prompt: "What specific emotion was I feeling right before I went numb?" },
+                es: { name: "Modo Congelación (Apagado Emocional)", what: "Te sientes entumecido o brumoso. Este es un Apagado Vagal Dorsal. Tu sistema ha tirado del freno de emergencia porque la intensidad emocional se volvió demasiado alta. No eres 'frío'; estás abrumado.", why: "Esta es la estrategia de supervivencia definitiva. Cuando no podías luchar o huir en el pasado, aprendiste a desaparecer dentro de ti mismo. Tu cuerpo cree que no sentir nada es más seguro que sentir este dolor.", interrupt: "Necesitamos movilizarnos lentamente. Sacude las manos vigorosamente. Tararea un tono bajo. Envuélvete en una manta pesada.", practice: "Orientación: Mira alrededor. Nombra 3 objetos rojos. Nombra 3 cosas que puedas tocar. Señala a tu cerebro que estás en el presente.", anchor: "Es seguro estar en mi cuerpo. Estoy justo aquí.", prompt: "¿Qué emoción específica estaba sintiendo justo antes de entumecerme?" }
             }
         };
 
-        const EMOTION_KEYWORDS = { "anxious": ["worry", "scared", "nervous"], "angry": ["mad", "resent", "furious"], "sad": ["cry", "hopeless", "heavy"] };
+        // --- APP CONTROLLER ---
+        window.App = {
+            state: {
+                lang: 'en',
+                premium: localStorage.getItem('lunaPremium') === 'true',
+                consent: localStorage.getItem('lunaConsent') === 'true',
+                vault: JSON.parse(localStorage.getItem('lunaVault') || '{"free":[],"premium":[]}'),
+                inputs: {},
+                currentResult: null,
+                activeModule: null
+            },
 
-        // GLOBAL FUNCTIONS
-        function navigateTo(id) {
-            document.querySelectorAll('main > div, main > section').forEach(el => el.classList.add('hidden'));
-            document.getElementById(id).classList.remove('hidden');
-            const fill = document.getElementById('progress-fill');
-            const bar = document.getElementById('progress-container');
-            const progress = { 'screen-home': '0%', 'screen-checkin': '33%', 'screen-result': '66%', 'screen-module': '100%' }[id];
-            if (progress && progress !== '0%') { bar.classList.remove('hidden'); setTimeout(() => fill.style.width = progress, 50); } else { bar.classList.add('hidden'); }
-            if(id === 'screen-vault') renderVault('free');
-        }
+            navigateTo: function(id) {
+                document.querySelectorAll('main > div, main > section').forEach(el => el.classList.add('hidden'));
+                document.getElementById(id).classList.remove('hidden');
+                if(id === 'screen-vault') App.renderVault();
+            },
 
-        function toggleLang() {
-            currentLang = currentLang === 'en' ? 'es' : 'en';
-            document.getElementById('lang-display').innerText = currentLang.toUpperCase();
-            const t = LANG[currentLang];
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if(t[key]) el.innerText = t[key];
-            });
-        }
+            toggleLang: function() {
+                App.state.lang = App.state.lang === 'en' ? 'es' : 'en';
+                document.getElementById('lang-display').innerText = App.state.lang.toUpperCase();
+                App.translateUI();
+            },
 
-        function runDecoder() {
-            const b = document.getElementById('in-behavior').value;
-            if(!b) return alert("Please select a behavior.");
-            
-            currentInputs.behavior = b;
-            currentInputs.vent = document.getElementById('in-vent').value;
-            currentInputs.intensity = document.getElementById('in-intensity').value;
-            
-            document.getElementById('decode-btn-text').innerText = "Analyzing...";
-            document.getElementById('decode-spinner').classList.remove('hidden');
-            
-            setTimeout(() => {
-                const db = LOGIC_DB[b] || LOGIC_DB['panic_clinging'];
-                const data = db[currentLang];
+            translateUI: function() {
+                const t = LANG[App.state.lang];
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if(t[key]) el.innerText = t[key];
+                });
+            },
+
+            runDecoder: function() {
+                const b = document.getElementById('in-behavior').value;
+                if(!b) return alert("Please select a behavior.");
                 
-                currentResult = { ...data, behavior: b };
+                App.state.inputs = {
+                    behavior: b,
+                    vent: document.getElementById('in-vent').value,
+                    intensity: document.getElementById('in-intensity').value
+                };
                 
-                setText('out-pattern', data.name);
-                setText('out-subtype', `${data.subtype} • ${currentInputs.intensity}/10`);
-                setText('out-what', data.what);
-                setText('out-why', data.why);
+                document.getElementById('decode-btn-text').innerText = "Analyzing...";
+                document.getElementById('decode-spinner').classList.remove('hidden');
+
+                setTimeout(() => {
+                    const db = LOGIC_DB[b] || LOGIC_DB['panic_clinging']; // Default fallback logic
+                    const data = db[App.state.lang];
+                    
+                    App.state.currentResult = { ...data }; // Store the result
+                    
+                    document.getElementById('out-pattern').innerText = data.name;
+                    document.getElementById('out-what').innerText = data.what;
+                    document.getElementById('out-why').innerText = data.why;
+                    
+                    // Reset Button
+                    document.getElementById('decode-btn-text').innerText = "Decode My Pattern";
+                    document.getElementById('decode-spinner').classList.add('hidden');
+                    
+                    App.navigateTo('screen-result');
+                }, 800);
+            },
+
+            showModule: function(type) {
+                if(type === 'journal' && !App.state.premium) return UI.showPaywall();
+                App.state.activeModule = type;
                 
-                document.getElementById('decode-btn-text').innerText = "Decode My Pattern";
-                document.getElementById('decode-spinner').classList.add('hidden');
+                const r = App.state.currentResult;
+                let content = "";
                 
-                navigateTo('screen-result');
-            }, 600);
-        }
+                // MAP BUTTONS TO DEEP CONTENT
+                if (type === "interrupt") content = r.interrupt;
+                else if (type === "practice") content = r.practice;
+                else if (type === "anchor") content = r.anchor;
+                else if (type === "journal") content = r.prompt;
+                
+                // TITLE FORMATTING
+                const titles = { interrupt: "Somatic Interrupter", practice: "Micro-Practice", anchor: "Truth Anchor", journal: "Deep Inquiry" };
+                document.getElementById('mod-title').innerText = titles[type] || type.toUpperCase();
+                
+                // CONTENT INJECTION
+                document.getElementById('mod-content').innerText = content;
+                
+                // INPUT RECYCLING
+                const jArea = document.getElementById('journal-area');
+                if (type === 'journal') {
+                    jArea.classList.remove('hidden');
+                    // Inject user's vent into the journal prompt for continuity
+                    document.getElementById('journal-input-module').value = App.state.inputs.vent ? `[My Situation]: ${App.state.inputs.vent}\n\n[Reflection]: ` : "";
+                } else { jArea.classList.add('hidden'); }
+                
+                App.navigateTo('screen-module');
+            },
 
-        function showModule(type) {
-            if(type === 'journal' && !isPremium) return showPaywall();
-            activeModule = type;
-            
-            const r = currentResult;
-            let content = "";
-            if (type === "interrupt") content = r.interrupt;
-            else if (type === "practice") content = r.practice;
-            else if (type === "anchor") content = r.anchor;
-            else if (type === "journal") content = r.prompt;
-            
-            setText('mod-title', type.toUpperCase());
-            setText('mod-content', content);
-            
-            const jArea = document.getElementById('journal-area');
-            if (type === 'journal') {
-                jArea.classList.remove('hidden');
-                document.getElementById('journal-input-module').value = currentInputs.vent ? `[Vent]: ${currentInputs.vent}\n\n` : "";
-            } else { jArea.classList.add('hidden'); }
-            
-            navigateTo('screen-module');
-        }
+            saveFreeEntry: function() {
+                if(!App.state.consent) return App.navigateTo('screen-safety');
+                const entry = { id: Date.now(), date: new Date().toISOString(), inputs: { ...App.state.inputs }, result: App.state.currentResult };
+                App.state.vault.free.unshift(entry);
+                localStorage.setItem('lunaVault', JSON.stringify(App.state.vault));
+                UI.toast(App.state.lang === 'en' ? "Saved" : "Guardado");
+            },
 
-        function saveFreeEntry() {
-            if(!consentGiven) return navigateTo('screen-safety');
-            const entry = { id: Date.now(), date: new Date().toISOString(), inputs: { ...currentInputs }, result: currentResult };
-            vault.free.unshift(entry);
-            localStorage.setItem('lunaVault', JSON.stringify(vault));
-            toast(currentLang === 'en' ? "Saved" : "Guardado");
-        }
+            saveModuleEntry: function() {
+                if(!App.state.premium) return UI.showPaywall();
+                let content = document.getElementById('mod-content').innerText;
+                if (App.state.activeModule === 'journal') content += "\n\n" + document.getElementById('journal-input-module').value;
+                const entry = { id: Date.now(), date: new Date().toISOString(), text: content, type: App.state.activeModule };
+                App.state.vault.premium.unshift(entry);
+                localStorage.setItem('lunaVault', JSON.stringify(App.state.vault));
+                UI.toast("Saved");
+            },
 
-        function saveModuleEntry() {
-            if(!isPremium) return showPaywall();
-            let content = document.getElementById('mod-content').innerText;
-            if (activeModule === 'journal') content += "\n\n" + document.getElementById('journal-input-module').value;
-            const entry = { id: Date.now(), date: new Date().toISOString(), text: content, type: activeModule };
-            vault.premium.unshift(entry);
-            localStorage.setItem('lunaVault', JSON.stringify(vault));
-            toast("Saved");
-        }
+            renderVault: function(tab = 'free') {
+                const list = document.getElementById('vault-content');
+                const data = App.state.vault[tab];
+                if (!data || data.length === 0) { list.innerHTML = '<p class="text-center text-gray-400 mt-10">Empty / Vacío</p>'; return; }
+                list.innerHTML = data.map(e => `<div class="bg-white p-4 rounded-xl shadow border-l-4 border-sage-500 mb-3 relative dark:bg-gray-800"><div class="flex justify-between mb-1"><span class="font-bold text-gray-800 dark:text-white">${e.result ? e.result.name : 'Journal'}</span><span class="text-xs text-gray-400">${new Date(e.date).toLocaleDateString()}</span></div><p class="text-sm text-gray-600 italic dark:text-gray-300">"${(e.inputs ? e.inputs.vent : e.text).substring(0, 60)}..."</p></div>`).join('');
+            },
 
-        function savePremiumEntry() {
-            const text = document.getElementById('prem-text').value;
-            if (!text) return alert("Please write something.");
-            
-            let tone = "Neutral";
-            const lower = text.toLowerCase();
-            for (const [emotion, words] of Object.entries(EMOTION_KEYWORDS)) {
-                if (words.some(w => lower.includes(w))) tone = emotion.charAt(0).toUpperCase() + emotion.slice(1);
-            }
+            switchTab: function(tab) {
+                document.getElementById('tab-free').className = tab === 'free' ? 'flex-1 py-2 text-xs font-bold rounded bg-sage-100 text-sage-700' : 'flex-1 py-2 text-xs font-bold rounded text-gray-400';
+                document.getElementById('tab-premium').className = tab === 'premium' ? 'flex-1 py-2 text-xs font-bold rounded bg-sage-100 text-sage-700' : 'flex-1 py-2 text-xs font-bold rounded text-gray-400';
+                App.renderVault(tab);
+            },
 
-            const entry = { id: Date.now(), date: new Date().toISOString(), prompt: document.getElementById('prem-prompt').value, text: text, analysis: { tone: tone } };
-            vault.premium.unshift(entry);
-            localStorage.setItem('lunaVault', JSON.stringify(vault));
-            toast("Saved");
-            navigateTo('screen-home');
-        }
-        
-        function generateWeekly() {
-            if (vault.premium.length === 0) return alert("No entries");
-            const report = { id: Date.now(), date: new Date().toISOString(), summary: `Checked in ${vault.premium.length} times.` };
-            vault.reports.unshift(report);
-            localStorage.setItem('lunaVault', JSON.stringify(vault));
-            setText('report-body', report.summary);
-            toggleModal('modal-report-view');
-            renderVault('reports');
-        }
+            // UTILS
+            grantConsent: function() { App.state.consent = true; localStorage.setItem('lunaConsent', 'true'); App.navigateTo('screen-intake'); },
+            startPremiumJournal: function() { if(!App.state.premium) return UI.showPaywall(); App.navigateTo('screen-premium-journal'); },
+            startVoice: function(id) {
+                if (!('webkitSpeechRecognition' in window)) return UI.toast("Mic not supported");
+                const recognition = new webkitSpeechRecognition();
+                recognition.lang = App.state.lang === 'en' ? 'en-US' : 'es-ES';
+                recognition.onstart = () => { UI.toast("Listening..."); };
+                recognition.onresult = (event) => document.getElementById(id).value += " " + event.results[0][0].transcript;
+                recognition.start();
+            },
+            checkCode: function() {
+                if (document.getElementById('accessCode').value.toUpperCase() === 'LUNA2025') {
+                    App.state.premium = true; localStorage.setItem('lunaPremium', 'true');
+                    alert("Unlocked!"); UI.closePaywall(); 
+                    document.getElementById('upgradeBtn').classList.add('hidden');
+                } else { alert("Incorrect Code"); }
+            },
+            reset: function() { document.getElementById('in-vent').value = ""; App.navigateTo('screen-home'); },
+            clearVault: function() { if(confirm("Delete?")) { localStorage.removeItem('lunaVault'); location.reload(); } }
+        };
 
-        function switchTab(tab) {
-            activeTab = tab;
-            document.getElementById('tab-free').className = tab === 'free' ? 'flex-1 py-2 text-xs font-bold rounded bg-sage-100 text-sage-700' : 'flex-1 py-2 text-xs font-bold rounded text-gray-400';
-            document.getElementById('tab-premium').className = tab === 'premium' ? 'flex-1 py-2 text-xs font-bold rounded bg-sage-100 text-sage-700' : 'flex-1 py-2 text-xs font-bold rounded text-gray-400';
-            document.getElementById('tab-reports').className = tab === 'reports' ? 'flex-1 py-2 text-xs font-bold rounded bg-sage-100 text-sage-700' : 'flex-1 py-2 text-xs font-bold rounded text-gray-400';
-            
-            const repBtn = document.getElementById('report-actions');
-            if(tab === 'reports') repBtn.classList.remove('hidden'); else repBtn.classList.add('hidden');
-            renderVault(tab);
-        }
+        const UI = {
+            toast: function(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.className = "show"; setTimeout(() => t.className = "", 3000); },
+            showPaywall: function() { document.getElementById('paywallModal').classList.remove('hidden'); },
+            closePaywall: function() { document.getElementById('paywallModal').classList.add('hidden'); },
+            toggleModal: function(id) { const m = document.getElementById(id); m.classList.contains('hidden') ? m.classList.remove('hidden') : m.classList.add('hidden'); }
+        };
 
-        function renderVault(tab = activeTab) {
-            const list = document.getElementById('vault-content');
-            const data = vault[tab];
-            if (!data || data.length === 0) { list.innerHTML = '<p class="text-center text-gray-400 mt-10">Empty / Vacío</p>'; return; }
-            list.innerHTML = data.map(e => `<div class="bg-white p-4 rounded-xl shadow border-l-4 border-sage-500 mb-3 relative dark:bg-gray-800"><div class="flex justify-between mb-1"><span class="font-bold text-gray-800 dark:text-white">${e.result ? e.result.name : 'Entry'}</span><span class="text-xs text-gray-400">${new Date(e.date).toLocaleDateString()}</span></div><p class="text-sm text-gray-600 italic dark:text-gray-300">"${(e.inputs ? e.inputs.vent : e.text).substring(0, 60)}..."</p></div>`).join('');
-        }
-
-        // HELPERS
-        function setText(id, val) { const el = document.getElementById(id); if(el) el.innerText = val; }
-        function toast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.className = "show"; setTimeout(() => t.className = "", 3000); }
-        function showPaywall() { document.getElementById('paywallModal').classList.remove('hidden'); }
-        function closePaywall() { document.getElementById('paywallModal').classList.add('hidden'); }
-        function toggleModal(id) { const m = document.getElementById(id); m.classList.contains('hidden') ? m.classList.remove('hidden') : m.classList.add('hidden'); }
-        function toggleDark() { document.documentElement.classList.toggle('dark'); toast("Theme Updated"); }
-        function grantConsent() { consentGiven = true; localStorage.setItem('lunaConsent', 'true'); navigateTo('screen-intake'); }
-        function startPremiumJournal() { if(!isPremium) return showPaywall(); navigateTo('screen-premium-journal'); }
-        function resetFlow() { document.getElementById('in-vent').value = ""; navigateTo('screen-home'); }
-        function clearVault() { if(confirm("Delete?")) { localStorage.removeItem('lunaVault'); location.reload(); } }
-        
-        function startVoice(id) {
-            if (!('webkitSpeechRecognition' in window)) return toast("Mic not supported");
-            const recognition = new webkitSpeechRecognition();
-            recognition.lang = currentLang === 'en' ? 'en-US' : 'es-ES';
-            recognition.onstart = () => { toast("Listening..."); document.querySelector(`[onclick*="${id}"] i`).classList.add('mic-active'); };
-            recognition.onend = () => document.querySelector(`[onclick*="${id}"] i`).classList.remove('mic-active');
-            recognition.onresult = (event) => document.getElementById(id).value += " " + event.results[0][0].transcript;
-            recognition.start();
-        }
-
-        function checkCode() {
-            if (document.getElementById('accessCode').value.toUpperCase() === 'LUNA2025') {
-                isPremium = true; localStorage.setItem('lunaPremium', 'true');
-                alert("Unlocked!"); closePaywall(); 
-                document.getElementById('upgradeBtn').classList.add('hidden');
-                document.getElementById('lock-icon').classList.add('hidden');
-            } else { alert("Incorrect Code"); }
-        }
-
-        if(isPremium) {
-            document.getElementById('upgradeBtn').classList.add('hidden');
-            document.getElementById('lock-icon').classList.add('hidden');
-        }
-        navigateTo('screen-home');
+        // INIT
+        if(App.state.premium) document.getElementById('upgradeBtn').classList.add('hidden');
+        if(Array.isArray(App.state.vault)) { App.state.vault = { free: App.state.vault, premium: [] }; localStorage.setItem('lunaVault', JSON.stringify(App.state.vault)); }
+        App.navigateTo('screen-home');
     </script>
 </body>
 </html>
